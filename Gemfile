@@ -2,6 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-group :ci do
+group :test, :ci do
   gem 'simplecov-rcov', '~> 0.2'
 end
