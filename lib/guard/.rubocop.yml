@@ -1,0 +1,4 @@
+# A workaround for `autoload :Runner` in rubocop.rb
+# until comment based switch will be released
+SymbolSnakeCase:
+  Enabled: false

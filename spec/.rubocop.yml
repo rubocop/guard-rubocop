@@ -1,0 +1,4 @@
+# Avoid warning "Possibly useless use of == in void context"
+# for `should ==`
+Syntax:
+  Enabled: false
