@@ -1,4 +1,4 @@
-# Guard::Rubocop [![Build Status](https://travis-ci.org/yujinakayama/guard-rubocop.png)](https://travis-ci.org/yujinakayama/guard-rubocop) [![Dependency Status](https://gemnasium.com/yujinakayama/guard-rubocop.png)](https://gemnasium.com/yujinakayama/guard-rubocop)
+# Guard::Rubocop [![Build Status](https://travis-ci.org/yujinakayama/guard-rubocop.png)](https://travis-ci.org/yujinakayama/guard-rubocop) [![Dependency Status](https://gemnasium.com/yujinakayama/guard-rubocop.png)](https://gemnasium.com/yujinakayama/guard-rubocop) [![Code Climate](https://codeclimate.com/github/yujinakayama/guard-rubocop.png)](https://codeclimate.com/github/yujinakayama/guard-rubocop)
 
 
 Guard::Rubocop allows you to automatically check Ruby code style with [RuboCop](https://github.com/bbatsov/rubocop) when files are modified.
