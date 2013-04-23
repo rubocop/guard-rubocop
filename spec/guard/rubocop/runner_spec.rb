@@ -128,7 +128,7 @@ describe Guard::Rubocop::Runner, :silence_output do
     end
   end
 
-  shared_context 'stubbed output', stubbed_output: true do
+  shared_context 'stubbed output', :stubbed_output do
     before do
       runner.stub(:output) do
 <<OUTPUT
@@ -143,7 +143,7 @@ OUTPUT
     end
   end
 
-  describe '#notify', stubbed_output: true do
+  describe '#notify', :stubbed_output do
     it 'notifies summary' do
       Guard::Notifier.should_receive(:notify) do |message, options|
         message.should == '7 files inspected, 2 offences detected'
@@ -185,7 +185,7 @@ OUTPUT
     end
   end
 
-  describe '#summary', stubbed_output: true do
+  describe '#summary', :stubbed_output do
     subject { super().summary }
 
     it 'returns summary line of output' do
@@ -193,7 +193,7 @@ OUTPUT
     end
   end
 
-  describe '#failed_paths', stubbed_output: true do
+  describe '#failed_paths', :stubbed_output do
     subject { super().failed_paths }
 
     it 'returns failed file paths as array' do

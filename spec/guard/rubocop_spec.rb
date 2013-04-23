@@ -165,7 +165,7 @@ module Guard
         ]
       end
 
-      it 'removes to duplicated paths' do
+      it 'removes duplicated paths' do
         paths = [
           'lib/guard/rubocop.rb',
           'spec/spec_helper.rb',
