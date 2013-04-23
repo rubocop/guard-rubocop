@@ -40,20 +40,10 @@ module Guard
 
         process.start
 
-        ios = [stdout_reader]
         output = ''
 
         loop do
-          available_ios, = IO.select(ios, nil, nil, MINIMUM_POLL_INTERVAL)
-
-          if available_ios
-            available_ios.each do |io|
-              chunk = io.read_available_nonblock
-              $stdout.write chunk
-              output << chunk
-            end
-          end
-
+          output << capture_and_print_output(stdout_reader)
           break if process.exited?
         end
 
@@ -73,6 +63,16 @@ module Guard
       def failed_paths
         return [] unless output
         output.scan(/^== (.+) ==$/).flatten
+      end
+
+      private
+
+      def capture_and_print_output(output)
+        available_ios, = IO.select([output], nil, nil, MINIMUM_POLL_INTERVAL)
+        return '' unless available_ios
+        chunk = available_ios.first.read_available_nonblock
+        $stdout.write chunk
+        chunk
       end
 
       class IO < ::IO
