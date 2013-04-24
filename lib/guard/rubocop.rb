@@ -38,8 +38,7 @@ module Guard
 
     def run_on_changes(paths)
       paths += @failed_paths if @options[:keep_failed]
-      paths.map! { |path| File.expand_path(path) }
-      paths.uniq!
+      paths = clean_paths(paths)
 
       UI.info "Checking Ruby code styles: #{paths.join(' ')}"
 
