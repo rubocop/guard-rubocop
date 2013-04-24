@@ -52,7 +52,7 @@ module Guard
 
       def notify
         image = passed ? :success : :failed
-        Notifier.notify(summary, title: 'Rubocop results', image: image)
+        Notifier.notify(summary, title: 'RuboCop results', image: image)
       end
 
       def summary

@@ -151,9 +151,9 @@ OUTPUT
       runner.notify
     end
 
-    it 'notifies with title "Rubocop results"' do
+    it 'notifies with title "RuboCop results"' do
       Guard::Notifier.should_receive(:notify) do |message, options|
-        options[:title].should == 'Rubocop results'
+        options[:title].should == 'RuboCop results'
       end
       runner.notify
     end
