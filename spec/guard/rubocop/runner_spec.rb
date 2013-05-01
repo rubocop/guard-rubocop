@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'spec_helper.rb'
-require 'term/ansicolor'
 
 describe Guard::Rubocop::Runner, :silence_output do
   include CaptureHelper
@@ -121,9 +120,9 @@ describe Guard::Rubocop::Runner, :silence_output do
         runner.stub(:notify)
       end
 
-      it 'returns uncolored output of rubocop command' do
+      it 'returns output of rubocop command' do
         captured_output = capture(:stdout) { runner.run(paths) }
-        runner.output.should == Term::ANSIColor.uncolor(captured_output)
+        runner.output.should == captured_output
       end
     end
   end

@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'childprocess'
-require 'term/ansicolor'
 
 module Guard
   class Rubocop
@@ -18,9 +17,8 @@ module Guard
       end
 
       def run(paths = [])
-        exit_code, output = rubocop(paths)
+        exit_code, @output = rubocop(['--no-color'].concat(paths))
         @passed = (exit_code == PASSED_EXIT_CODE)
-        @output = Term::ANSIColor.uncolor(output)
 
         case @options[:notification]
         when :failed
