@@ -15,4 +15,4 @@ namespace :ci do
   end
 end
 
-task :default => :spec
+task default: :spec
