@@ -6,7 +6,7 @@ require 'guard/notifier'
 
 module Guard
   class Rubocop < Guard
-    autoload :Runner, 'guard/rubocop/runner' # rubocop:disable SymbolSnakeCase
+    autoload :Runner, 'guard/rubocop/runner'
 
     attr_reader :options, :failed_paths
 
