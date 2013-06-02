@@ -2,7 +2,6 @@
 
 require 'guard'
 require 'guard/guard'
-require 'guard/notifier'
 
 module Guard
   class Rubocop < Guard

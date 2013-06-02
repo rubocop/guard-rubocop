@@ -1,3 +1,6 @@
+inherit_from:
+  - ../.rubocop.yml
+
 # Avoid warning "Possibly useless use of == in void context"
 # for `should ==`
 Syntax:
