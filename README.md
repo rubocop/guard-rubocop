@@ -45,7 +45,7 @@ Please read the [Guard usage documentation](https://github.com/guard/guard#readm
 You can pass some options in `Guardfile`:
 
 ```ruby
-guard 'rubocop', all_on_start: false, notification: true do
+guard :rubocop, all_on_start: false, notification: true do
   # ...
 end
 ```
