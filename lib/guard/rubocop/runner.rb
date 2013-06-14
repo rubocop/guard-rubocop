@@ -35,9 +35,12 @@ module Guard
       def rubocop(args)
         process = ChildProcess.build('rubocop', *args)
 
-        stdout_reader, stdout_writer = IO.pipe
-        process.io.stdout = stdout_writer
+        # Force Rainbow inside RuboCop to colorize output
+        # even though output is not TTY.
+        # https://github.com/sickill/rainbow/blob/0b64edc/lib/rainbow.rb#L7
+        process.environment['CLICOLOR_FORCE'] = '1'
 
+        stdout_reader, process.io.stdout = IO.pipe
         process.start
 
         output = ''
