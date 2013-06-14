@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency "guard",          '~> 1.8'
-  spec.add_runtime_dependency "rubocop",        ['>= 0.6.1', '< 1.0.0']
+  spec.add_runtime_dependency "rubocop",        ['>= 0.8.2', '< 0.9.0']
   spec.add_runtime_dependency "childprocess",   '~> 0.3'
   spec.add_runtime_dependency "term-ansicolor", '~> 1.1'
 
