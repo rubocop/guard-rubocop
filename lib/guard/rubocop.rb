@@ -33,7 +33,10 @@ module Guard
     def run_on_changes(paths)
       paths += @failed_paths if @options[:keep_failed]
       paths = clean_paths(paths)
-      UI.info "Inspecting Ruby code style: #{paths.join(' ')}"
+
+      displayed_paths = paths.map { |path| smart_path(path) }
+      UI.info "Inspecting Ruby code style: #{displayed_paths.join(' ')}"
+
       run(paths)
     end
 
@@ -68,6 +71,14 @@ module Guard
       dir_paths.delete(target_path)
       dir_paths.any? do |dir_path|
         target_path.start_with?(dir_path)
+      end
+    end
+
+    def smart_path(path)
+      if path.start_with?(Dir.pwd)
+        Pathname.new(path).relative_path_from(Pathname.getwd).to_s
+      else
+        path
       end
     end
   end
