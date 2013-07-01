@@ -26,14 +26,14 @@ module Guard
     end
 
     def run_all
-      UI.info 'Checking Ruby code style of all files'
+      UI.info 'Inspecting Ruby code style of all files'
       run
     end
 
     def run_on_changes(paths)
       paths += @failed_paths if @options[:keep_failed]
       paths = clean_paths(paths)
-      UI.info "Checking Ruby code styles: #{paths.join(' ')}"
+      UI.info "Inspecting Ruby code style: #{paths.join(' ')}"
       run(paths)
     end
 
