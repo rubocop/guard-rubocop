@@ -27,25 +27,14 @@ module Guard
 
     def run_all
       UI.info 'Checking Ruby code style of all files'
-
-      runner = Runner.new(@options)
-      passed = runner.run
-      @failed_paths = runner.failed_paths
-
-      throw :task_has_failed unless passed
+      run
     end
 
     def run_on_changes(paths)
       paths += @failed_paths if @options[:keep_failed]
       paths = clean_paths(paths)
-
       UI.info "Checking Ruby code styles: #{paths.join(' ')}"
-
-      runner = Runner.new(@options)
-      passed = runner.run(paths)
-      @failed_paths = runner.failed_paths
-
-      throw :task_has_failed unless passed
+      run(paths)
     end
 
     def reload
@@ -63,6 +52,16 @@ module Guard
     end
 
     private
+
+    def run(paths = [])
+      runner = Runner.new(@options)
+      passed = runner.run(paths)
+      @failed_paths = runner.failed_paths
+      throw :task_has_failed unless passed
+    rescue => error
+      UI.error 'The following exception occurred while running guard-rubocop: ' +
+               "#{error.backtrace.first} #{error.message} (#{error.class.name})"
+    end
 
     def included_in_other_path?(target_path, other_paths)
       dir_paths = other_paths.select { |path| File.directory?(path) }

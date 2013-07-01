@@ -73,6 +73,13 @@ describe Guard::Rubocop, :silence_output do
         guard.failed_paths.should == failed_paths
       end
     end
+
+    context 'when an exception is raised' do
+      it 'prevents itself from firing' do
+        runner.stub(:run).and_raise(RuntimeError)
+        expect { subject }.not_to raise_error
+      end
+    end
   end
 
   describe '#run_all', :processes_after_running do
@@ -80,10 +87,11 @@ describe Guard::Rubocop, :silence_output do
 
     before do
       runner.stub(:run).and_return(true)
+      runner.stub(:failed_paths).and_return([])
     end
 
     it 'inspects all files with rubocop' do
-      runner.should_receive(:run).with(no_args)
+      runner.should_receive(:run).with([])
       guard.run_all
     end
   end
@@ -94,6 +102,7 @@ describe Guard::Rubocop, :silence_output do
 
     before do
       runner.stub(:run).and_return(true)
+      runner.stub(:failed_paths).and_return([])
     end
 
     it 'inspects changed files with rubocop' do

@@ -1,11 +1,8 @@
 # coding: utf-8
 
 require 'spec_helper.rb'
-require 'term/ansicolor'
 
-describe Guard::Rubocop::Runner, :silence_output do
-  include CaptureHelper
-
+describe Guard::Rubocop::Runner do
   subject(:runner) { Guard::Rubocop::Runner.new(options) }
   let(:options) { {} }
 
@@ -14,24 +11,26 @@ describe Guard::Rubocop::Runner, :silence_output do
     let(:paths) { ['spec/spec_helper.rb'] }
 
     before do
-      runner.stub(:rubocop)
+      runner.stub(:system)
     end
 
     it 'executes rubocop' do
-      runner.should_receive(:rubocop)
+      runner.should_receive(:system) do |*args|
+        args.first.should == 'rubocop'
+      end
       runner.run
     end
 
-    context 'when all files are passed' do
+    context 'when RuboCop exited with 0 status' do
       before do
-        runner.stub(:rubocop).and_return(0)
+        runner.stub(:system).and_return(true)
       end
       it { should be_true }
     end
 
-    context 'when any file is failed' do
+    context 'when RuboCop exited with non 0 status' do
       before do
-        runner.stub(:rubocop).and_return(1)
+        runner.stub(:system).and_return(false)
       end
       it { should be_false }
     end
@@ -53,7 +52,7 @@ describe Guard::Rubocop::Runner, :silence_output do
     shared_examples 'notification' do |expectations|
       context 'when passed' do
         before do
-          runner.stub(:rubocop).and_return(0)
+          runner.stub(:system).and_return(true)
         end
 
         if expectations[:passed]
@@ -65,7 +64,7 @@ describe Guard::Rubocop::Runner, :silence_output do
 
       context 'when failed' do
         before do
-          runner.stub(:rubocop).and_return(1)
+          runner.stub(:system).and_return(false)
         end
 
         if expectations[:failed]
@@ -92,116 +91,198 @@ describe Guard::Rubocop::Runner, :silence_output do
     end
   end
 
-  describe '#rubocop' do
-    let(:paths) { ['spec/spec_helper.rb'] }
+  describe '#build_command' do
+    let(:paths) { %w(file1.rb file2.rb) }
 
-    it 'runs rubocop command' do
-      capture(:stdout) do
-        runner.rubocop(paths)
-      end.should include 'inspected'
+    it 'adds args for the default formatter for console' do
+      runner.build_command(paths)[0..2].should == %w(rubocop --format progress)
     end
 
-    it 'returns exit code and output' do
-      exit_code, output = runner.rubocop(paths)
-      exit_code.should == 0
-      output.should include 'inspected'
-    end
-  end
-
-  describe '#output' do
-    subject { super().output }
-    let(:paths) { ['spec/spec_helper.rb'] }
-
-    context 'before running' do
-      it { should be_nil }
+    it 'adds args for JSON formatter ' do
+      runner.build_command(paths)[3..4].should == %w(--format json)
     end
 
-    context 'after running' do
-      before do
-        runner.stub(:notify)
-      end
+    it 'adds args for output file path of JSON formatter ' do
+      command = runner.build_command(paths)
+      command[5].should == '--out'
+      command[6].should_not be_empty
+    end
 
-      it 'returns uncolored output of rubocop command' do
-        captured_output = capture(:stdout) { runner.run(paths) }
-        runner.output.should == Term::ANSIColor.uncolor(captured_output)
-      end
+    it 'adds the passed paths' do
+      runner.build_command(paths)[7..-1].should == %w(file1.rb file2.rb)
     end
   end
 
-  shared_context 'stubbed output', :stubbed_output do
+  describe '#json_file_path' do
+    it 'is not world readable' do
+      File.world_readable?(runner.json_file_path).should be_false
+    end
+  end
+
+  shared_context 'JSON file', :json_file do
     before do
-      runner.stub(:output) do
-<<OUTPUT
-== /home/foo/guard-rubocop/lib/guard/rubocop.rb ==
-C:  1: Missing encoding comment.
-== /home/foo/guard-rubocop/spec/support/silence_output.rb ==
-C:  3: Ruby 1.8 hash syntax detected
-
-7 files inspected, 2 offences detected
-OUTPUT
-      end
+      json = <<-END
+        {
+          "metadata": {
+            "rubocop_version": "0.9.0",
+            "ruby_engine": "ruby",
+            "ruby_version": "2.0.0",
+            "ruby_patchlevel": "195",
+            "ruby_platform": "x86_64-darwin12.3.0"
+          },
+          "files": [{
+              "path": "lib/foo.rb",
+              "offences": []
+            }, {
+              "path": "lib/bar.rb",
+              "offences": [{
+                  "severity": "convention",
+                  "message": "Line is too long. [81/79]",
+                  "cop_name": "LineLength",
+                  "location": {
+                    "line": 546,
+                    "column": 80
+                  }
+                }, {
+                  "severity": "warning",
+                  "message": "Unreachable code detected.",
+                  "cop_name": "UnreachableCode",
+                  "location": {
+                    "line": 15,
+                    "column": 9
+                  }
+                }
+              ]
+            }
+          ],
+          "summary": {
+            "offence_count": 2,
+            "target_file_count": 2,
+            "inspected_file_count": 2
+          }
+        }
+      END
+      File.write(runner.json_file_path, json)
     end
   end
 
-  describe '#notify', :stubbed_output do
+  describe '#result', :json_file do
+    it 'parses JSON file' do
+      runner.result[:summary][:offence_count].should == 2
+    end
+  end
+
+  describe '#notify' do
+    before do
+      runner.stub(:result).and_return(
+        {
+          summary: {
+            offence_count: 4,
+            target_file_count: 3,
+            inspected_file_count: 2
+          }
+        }
+      )
+    end
+
     it 'notifies summary' do
       Guard::Notifier.should_receive(:notify) do |message, options|
-        message.should == '7 files inspected, 2 offences detected'
+        message.should == '2 files inspected, 4 offences detected'
       end
-      runner.notify
+      runner.notify(true)
     end
 
     it 'notifies with title "RuboCop results"' do
       Guard::Notifier.should_receive(:notify) do |message, options|
         options[:title].should == 'RuboCop results'
       end
-      runner.notify
+      runner.notify(true)
     end
 
     context 'when passed' do
-      before do
-        runner.stub(:passed).and_return(true)
-      end
-
       it 'shows success image' do
         Guard::Notifier.should_receive(:notify) do |message, options|
           options[:image].should == :success
         end
-        runner.notify
+        runner.notify(true)
       end
     end
 
     context 'when failed' do
-      before do
-        runner.stub(:passed).and_return(false)
-      end
-
       it 'shows failed image' do
         Guard::Notifier.should_receive(:notify) do |message, options|
           options[:image].should == :failed
         end
-        runner.notify
+        runner.notify(false)
       end
     end
   end
 
-  describe '#summary', :stubbed_output do
-    subject { super().summary }
+  describe '#summary_text' do
+    before do
+      runner.stub(:result).and_return(
+        {
+          summary: {
+            offence_count: offence_count,
+            target_file_count: target_file_count,
+            inspected_file_count: inspected_file_count
+          }
+        }
+      )
+    end
 
-    it 'returns summary line of output' do
-      should == '7 files inspected, 2 offences detected'
+    subject(:summary_text) { runner.summary_text }
+
+    let(:offence_count)        { 0 }
+    let(:target_file_count)    { 0 }
+    let(:inspected_file_count) { 0 }
+
+    context 'when no files are inspected' do
+      let(:inspected_file_count) { 0 }
+      it 'includes "0 files"' do
+        summary_text.should include '0 files'
+      end
+    end
+
+    context 'when a file is inspected' do
+      let(:inspected_file_count) { 1 }
+      it 'includes "1 file"' do
+        summary_text.should include '1 file'
+      end
+    end
+
+    context 'when 2 files are inspected' do
+      let(:inspected_file_count) { 2 }
+      it 'includes "2 files"' do
+        summary_text.should include '2 files'
+      end
+    end
+
+    context 'when no offences are detected' do
+      let(:offence_count) { 0 }
+      it 'includes "no offences"' do
+        summary_text.should include 'no offences'
+      end
+    end
+
+    context 'when an offence is detected' do
+      let(:offence_count) { 1 }
+      it 'includes "1 offence"' do
+        summary_text.should include '1 offence'
+      end
+    end
+
+    context 'when 2 offences are detected' do
+      let(:offence_count) { 2 }
+      it 'includes "2 offences"' do
+        summary_text.should include '2 offences'
+      end
     end
   end
 
-  describe '#failed_paths', :stubbed_output do
-    subject { super().failed_paths }
-
-    it 'returns failed file paths as array' do
-      should == [
-        '/home/foo/guard-rubocop/lib/guard/rubocop.rb',
-        '/home/foo/guard-rubocop/spec/support/silence_output.rb'
-      ]
+  describe '#failed_paths', :json_file do
+    it 'returns file paths which have offences' do
+      runner.failed_paths.should == ['lib/bar.rb']
     end
   end
-
 end

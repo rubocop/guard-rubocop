@@ -1,98 +1,91 @@
 # coding: utf-8
 
-require 'childprocess'
-require 'term/ansicolor'
+require 'json'
 
 module Guard
   class Rubocop
     class Runner
-      PASSED_EXIT_CODE = 0
-      MINIMUM_POLL_INTERVAL = 0.1
-
-      attr_reader :passed, :output
-
-      alias_method :passed?, :passed
-
       def initialize(options)
         @options = options
       end
 
       def run(paths = [])
-        exit_code, output = rubocop(paths)
-        @passed = (exit_code == PASSED_EXIT_CODE)
-        @output = Term::ANSIColor.uncolor(output)
+        command = build_command(paths)
+        passed = system(*command)
 
         case @options[:notification]
         when :failed
-          notify unless passed?
+          notify(passed) unless passed
         when true
-          notify
+          notify(passed)
         end
 
         passed
       end
 
-      def rubocop(args)
-        process = ChildProcess.build('rubocop', *args)
+      def build_command(paths)
+        command = ['rubocop']
+        command.concat(%w(--format progress)) # Keep default formatter for console.
+        command.concat(['--format', 'json', '--out', json_file_path])
+        command.concat(paths)
+      end
 
-        # Force Rainbow inside RuboCop to colorize output
-        # even though output is not TTY.
-        # https://github.com/sickill/rainbow/blob/0b64edc/lib/rainbow.rb#L7
-        process.environment['CLICOLOR_FORCE'] = '1'
-
-        stdout_reader, process.io.stdout = IO.pipe
-        process.start
-
-        output = ''
-
-        loop do
-          output << capture_and_print_output(stdout_reader)
-          break if process.exited?
+      def json_file_path
+        @tempfile_path ||= begin
+          # Just generate random tempfile path.
+          basename = self.class.name.downcase.gsub('::', '_')
+          tempfile = Tempfile.new(basename)
+          tempfile.close
+          tempfile.path
         end
-
-        [process.exit_code, output]
       end
 
-      def notify
-        image = passed ? :success : :failed
-        Notifier.notify(summary, title: 'RuboCop results', image: image)
-      end
-
-      def summary
-        return nil unless output
-        output.lines.to_a.last.chomp
-      end
-
-      def failed_paths
-        return [] unless output
-        output.scan(/^== (.+) ==$/).flatten
-      end
-
-      private
-
-      def capture_and_print_output(output)
-        available_ios, = IO.select([output], nil, nil, MINIMUM_POLL_INTERVAL)
-        return '' unless available_ios
-        chunk = available_ios.first.read_available_nonblock
-        $stdout.write chunk
-        chunk
-      end
-
-      class IO < ::IO
-        READ_CHUNK_SIZE = 10000
-
-        def read_available_nonblock
-          data = ''
-          loop do
-            begin
-              data << read_nonblock(READ_CHUNK_SIZE)
-            rescue ::IO::WaitReadable, EOFError
-              return data
-            end
+      def result
+        @result ||= begin
+          File.open(json_file_path) do |file|
+            JSON.load(file, nil, symbolize_names: true)
           end
         end
       end
 
+      def notify(passed)
+        image = passed ? :success : :failed
+        Notifier.notify(summary_text, title: 'RuboCop results', image: image)
+      end
+
+      def summary_text
+        summary = result[:summary]
+
+        text = pluralize(summary[:inspected_file_count], 'file')
+        text << ' inspected, '
+
+        text << pluralize(summary[:offence_count], 'offence', no_for_zero: true)
+        text << ' detected'
+      end
+
+      def failed_paths
+        failed_files = result[:files].reject do |file|
+          file[:offences].empty?
+        end
+        failed_files.map do |file|
+          file[:path]
+        end
+      end
+
+      def pluralize(number, thing, options = {})
+        text = ''
+
+        if number == 0 && options[:no_for_zero]
+          text = 'no'
+        else
+          text << number.to_s
+        end
+
+        text << " #{thing}"
+        text << 's' unless number == 1
+
+        text
+      end
     end
   end
 end
