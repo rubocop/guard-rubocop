@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.1.0
+
+* Update RuboCop dependency to 0.9 or later and earlier than 1.0
+* Rework with JSON formatter
+* Change the displayed text to "Inspecting ..."
+* Print relative file paths when they are under current working directory
+
 ## v0.0.4
 
 * Specify dependency on rubocop gem as under 0.9.0
