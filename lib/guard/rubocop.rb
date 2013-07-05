@@ -4,6 +4,8 @@ require 'guard'
 require 'guard/guard'
 
 module Guard
+  # This class gets API calls from `guard` and runs `rubocop` command via {Guard::Rubocop::Runner}.
+  # An instance of this class stays alive in a `guard` command session.
   class Rubocop < Guard
     autoload :Runner, 'guard/rubocop/runner'
 
