@@ -4,7 +4,7 @@
 
 Guard::Rubocop allows you to automatically check Ruby code style with [RuboCop](https://github.com/bbatsov/rubocop) when files are modified.
 
-Tested on MRI 1.9 and MRI 2.0, according to RuboCop.
+Tested on MRI 1.9, MRI 2.0, JRuby and Rubinius in 1.9 modes.
 
 ## Installation
 
@@ -42,10 +42,10 @@ Please read the [Guard usage documentation](https://github.com/guard/guard#readm
 
 ## Options
 
-You can pass some options in `Guardfile`:
+You can pass some options in `Guardfile` like the following example:
 
 ```ruby
-guard :rubocop, all_on_start: false, notification: true do
+guard :rubocop, all_on_start: false, cli: ['--format', 'clang', '--rails'] do
   # ...
 end
 ```
@@ -53,9 +53,14 @@ end
 ### Available Options
 
 ```ruby
-all_on_start: true     # Check all files at Guard startup, default: true
-keep_failed: true      # Keep failed files until they pass, default: true
-notification: :failed  # Display Growl notification after each run
+all_on_start: true     # Check all files at Guard startup.
+                       #   default: true
+cli: ['--rails']       # Pass arbitrary RuboCop CLI arguments.
+                       # An array or string is acceptable.
+                       #   default: nil
+keep_failed: true      # Keep failed files until they pass.
+                       #   default: true
+notification: :failed  # Display Growl notification after each run.
                        #   true    - Always notify
                        #   false   - Never notify
                        #   :failed - Notify only when failed

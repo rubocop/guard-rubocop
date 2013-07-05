@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.2.0
+
+* Add `:cli` option which allows to specify additional command line arguments
+* Support JRuby and Rubinius in 1.9 modes
+
 ## v0.1.0
 
 * Update RuboCop dependency to 0.9 or later and earlier than 1.0
