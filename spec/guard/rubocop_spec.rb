@@ -17,6 +17,7 @@ describe Guard::Rubocop, :silence_output do
       its([:all_on_start]) { should be_true }
       its([:keep_failed])  { should be_true }
       its([:notification]) { should == :failed }
+      its([:cli])          { should be_nil }
     end
   end
 

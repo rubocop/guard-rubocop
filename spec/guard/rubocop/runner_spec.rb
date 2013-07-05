@@ -92,24 +92,147 @@ describe Guard::Rubocop::Runner do
   end
 
   describe '#build_command' do
+    subject(:build_command) { runner.build_command(paths) }
+    let(:options) { { cli: %w(--debug --rails) } }
     let(:paths) { %w(file1.rb file2.rb) }
 
-    it 'adds args for the default formatter for console' do
-      runner.build_command(paths)[0..2].should == %w(rubocop --format progress)
+    context 'when :cli option includes formatter for console' do
+      let(:options) { { cli: %w(--format simple) } }
+
+      it 'does not add args for the default formatter for console' do
+        build_command[0..2].should_not == %w(rubocop --format progress)
+      end
+    end
+
+    context 'when :cli option does not include formatter for console' do
+      let(:options) { { cli: %w(--format simple --out simple.txt) } }
+
+      it 'adds args for the default formatter for console' do
+        build_command[0..2].should == %w(rubocop --format progress)
+      end
     end
 
     it 'adds args for JSON formatter ' do
-      runner.build_command(paths)[3..4].should == %w(--format json)
+      build_command[3..4].should == %w(--format json)
     end
 
     it 'adds args for output file path of JSON formatter ' do
-      command = runner.build_command(paths)
-      command[5].should == '--out'
-      command[6].should_not be_empty
+      build_command[5].should == '--out'
+      build_command[6].should_not be_empty
+    end
+
+    it 'adds args specified by user' do
+      build_command[7..8].should == %w(--debug --rails)
     end
 
     it 'adds the passed paths' do
-      runner.build_command(paths)[7..-1].should == %w(file1.rb file2.rb)
+      build_command[9..-1].should == %w(file1.rb file2.rb)
+    end
+
+    context 'when the value of :cli option is a string' do
+      let(:options) { { cli: '--debug --rails' } }
+
+      it 'handles' do
+        build_command[7..8].should == %w(--debug --rails)
+      end
+    end
+  end
+
+  describe '#args_specified_by_user' do
+    context 'when :cli option is nil' do
+      let(:options) { { cli: nil } }
+
+      it 'returns empty array' do
+        runner.args_specified_by_user.should == []
+      end
+    end
+
+    context 'when :cli option is an array' do
+      let(:options) { { cli: ['--out', 'output file.txt'] } }
+
+      it 'just returns the array' do
+        runner.args_specified_by_user.should == ['--out', 'output file.txt']
+      end
+    end
+
+    context 'when :cli option is a string' do
+      let(:options) { { cli: '--out "output file.txt"' } }
+
+      it 'returns an array from String#shellsplit' do
+        runner.args_specified_by_user.should == ['--out', 'output file.txt']
+      end
+    end
+
+    context 'when :cli option is other types' do
+      let(:options) { { cli: { key: 'value' } } }
+
+      it 'raises error' do
+        expect { runner.args_specified_by_user }.to raise_error
+      end
+    end
+  end
+
+  describe '#include_formatter_for_console?' do
+    subject(:include_formatter_for_console?) { runner.include_formatter_for_console?(args) }
+
+    context 'when the passed args include a -f/--format' do
+      context 'but does not include an -o/--output' do
+        let(:args) { %w(--format simple --debug) }
+
+        it 'returns true' do
+          include_formatter_for_console?.should be_true
+        end
+      end
+
+      context 'and include an -o/--output just after the -f/--format' do
+        let(:args) { %w(--format simple --out simple.txt) }
+
+        it 'returns false' do
+          include_formatter_for_console?.should be_false
+        end
+      end
+
+      context 'and include an -o/--output after the -f/--format across another arg' do
+        let(:args) { %w(--format simple --debug --out simple.txt) }
+
+        it 'returns false' do
+          include_formatter_for_console?.should be_false
+        end
+      end
+    end
+
+    context 'when the passed args include multiple -f/--format' do
+      context 'and all -f/--format have associated -o/--out' do
+        let(:args) { %w(--format simple --out simple.txt --format emacs --out emacs.txt) }
+
+        it 'returns false' do
+          include_formatter_for_console?.should be_false
+        end
+      end
+
+      context 'and any -f/--format has associated -o/--out' do
+        let(:args) { %w(--format simple --format emacs --out emacs.txt) }
+
+        it 'returns true' do
+          include_formatter_for_console?.should be_true
+        end
+      end
+
+      context 'and no -f/--format has associated -o/--out' do
+        let(:args) { %w(--format simple --format emacs) }
+
+        it 'returns true' do
+          include_formatter_for_console?.should be_true
+        end
+      end
+    end
+
+    context 'when the passed args do not include -f/--format' do
+      let(:args) { %w(--debug) }
+
+      it 'returns false' do
+        include_formatter_for_console?.should be_false
+      end
     end
   end
 

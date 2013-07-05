@@ -17,7 +17,8 @@ module Guard
       @options = {
         all_on_start: true,
         keep_failed:  true,
-        notification: :failed
+        notification: :failed,
+        cli: nil
       }.merge(options)
 
       @failed_paths = []

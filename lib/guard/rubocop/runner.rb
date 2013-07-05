@@ -31,9 +31,41 @@ module Guard
 
       def build_command(paths)
         command = ['rubocop']
-        command.concat(%w(--format progress)) # Keep default formatter for console.
+
+        unless include_formatter_for_console?(args_specified_by_user)
+          command.concat(%w(--format progress)) # Keep default formatter for console.
+        end
+
         command.concat(['--format', 'json', '--out', json_file_path])
+        command.concat(args_specified_by_user)
         command.concat(paths)
+      end
+
+      def args_specified_by_user
+        @args_specified_by_user ||= begin
+          args = @options[:cli]
+          case args
+          when Array    then args
+          when String   then args.shellsplit
+          when NilClass then []
+          else fail ':cli option must be either an array or string'
+          end
+        end
+      end
+
+      def include_formatter_for_console?(cli_args)
+        index = -1
+        formatter_args = cli_args.group_by do |arg|
+          if %w(-f --format).include?(arg)
+            index += 1
+          end
+          index
+        end
+        formatter_args.delete(-1)
+
+        formatter_args.each_value.any? do |args|
+          args.none? { |a| %w(-o --out).include?(a) }
+        end
       end
 
       def json_file_path
