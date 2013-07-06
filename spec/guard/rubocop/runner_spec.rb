@@ -128,14 +128,6 @@ describe Guard::Rubocop::Runner do
     it 'adds the passed paths' do
       build_command[9..-1].should == %w(file1.rb file2.rb)
     end
-
-    context 'when the value of :cli option is a string' do
-      let(:options) { { cli: '--debug --rails' } }
-
-      it 'handles' do
-        build_command[7..8].should == %w(--debug --rails)
-      end
-    end
   end
 
   describe '#args_specified_by_user' do
