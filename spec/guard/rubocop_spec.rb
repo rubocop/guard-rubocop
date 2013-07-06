@@ -199,4 +199,29 @@ describe Guard::Rubocop, :silence_output do
     end
   end
 
+  describe '#smart_path' do
+    def smart_path(path)
+      guard.send(:smart_path, path)
+    end
+
+    context 'when the passed path is under the current working directory' do
+      let(:path) { File.expand_path('spec/spec_helper.rb') }
+
+      it 'returns relative path' do
+        smart_path(path).should == 'spec/spec_helper.rb'
+      end
+    end
+
+    context 'when the passed path is outside of the current working directory' do
+      let(:path) do
+        tempfile = Tempfile.new('')
+        tempfile.close
+        File.expand_path(tempfile.path)
+      end
+
+      it 'returns absolute path' do
+        smart_path(path).should == path
+      end
+    end
+  end
 end
