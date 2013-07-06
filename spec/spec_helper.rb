@@ -14,7 +14,7 @@ SimpleCov.coverage_dir(File.join('spec', 'coverage'))
 if ENV['TRAVIS']
   require 'coveralls'
   SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-elsif ENV['CI'] # rubocop:disable IfUnlessModifier
+elsif ENV['CI']
   require 'simplecov-rcov'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 end
