@@ -15,4 +15,12 @@ namespace :ci do
   end
 end
 
-task default: :spec
+desc 'Check code style with RuboCop'
+task :style do
+  sh('rubocop')
+end
+
+desc 'Run RSpec code examples and check code style with RuboCop'
+task all: [:spec, :style]
+
+task default: :all
