@@ -3,7 +3,6 @@
 require 'json'
 
 # rubocop:disable Documentation
-
 module Guard
   class Rubocop
     # This class runs `rubocop` command, retrieves result and notifies.
@@ -11,6 +10,7 @@ module Guard
     class Runner
       # rubocop:enable Documentation
 
+      #
       def initialize(options)
         @options = options
       end
