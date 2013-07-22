@@ -11,40 +11,40 @@ describe Guard::Rubocop::Runner do
     let(:paths) { ['spec/spec_helper.rb'] }
 
     before do
-      runner.stub(:system)
+      allow(runner).to receive(:system)
     end
 
     it 'executes rubocop' do
-      runner.should_receive(:system) do |*args|
-        args.first.should == 'rubocop'
+      expect(runner).to receive(:system) do |*args|
+        expect(args.first).to eq('rubocop')
       end
       runner.run
     end
 
     context 'when RuboCop exited with 0 status' do
       before do
-        runner.stub(:system).and_return(true)
+        allow(runner).to receive(:system).and_return(true)
       end
       it { should be_true }
     end
 
     context 'when RuboCop exited with non 0 status' do
       before do
-        runner.stub(:system).and_return(false)
+        allow(runner).to receive(:system).and_return(false)
       end
       it { should be_false }
     end
 
     shared_examples 'notifies', :notifies do
       it 'notifies' do
-        runner.should_receive(:notify)
+        expect(runner).to receive(:notify)
         runner.run
       end
     end
 
     shared_examples 'does not notify', :does_not_notify do
       it 'does not notify' do
-        runner.should_not_receive(:notify)
+        expect(runner).not_to receive(:notify)
         runner.run
       end
     end
@@ -52,7 +52,7 @@ describe Guard::Rubocop::Runner do
     shared_examples 'notification' do |expectations|
       context 'when passed' do
         before do
-          runner.stub(:system).and_return(true)
+          allow(runner).to receive(:system).and_return(true)
         end
 
         if expectations[:passed]
@@ -64,7 +64,7 @@ describe Guard::Rubocop::Runner do
 
       context 'when failed' do
         before do
-          runner.stub(:system).and_return(false)
+          allow(runner).to receive(:system).and_return(false)
         end
 
         if expectations[:failed]
@@ -100,7 +100,7 @@ describe Guard::Rubocop::Runner do
       let(:options) { { cli: %w(--format simple) } }
 
       it 'does not add args for the default formatter for console' do
-        build_command[0..2].should_not == %w(rubocop --format progress)
+        expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
       end
     end
 
@@ -108,25 +108,25 @@ describe Guard::Rubocop::Runner do
       let(:options) { { cli: %w(--format simple --out simple.txt) } }
 
       it 'adds args for the default formatter for console' do
-        build_command[0..2].should == %w(rubocop --format progress)
+        expect(build_command[0..2]).to eq(%w(rubocop --format progress))
       end
     end
 
     it 'adds args for JSON formatter ' do
-      build_command[3..4].should == %w(--format json)
+      expect(build_command[3..4]).to eq(%w(--format json))
     end
 
     it 'adds args for output file path of JSON formatter ' do
-      build_command[5].should == '--out'
-      build_command[6].should_not be_empty
+      expect(build_command[5]).to eq('--out')
+      expect(build_command[6]).not_to be_empty
     end
 
     it 'adds args specified by user' do
-      build_command[7..8].should == %w(--debug --rails)
+      expect(build_command[7..8]).to eq(%w(--debug --rails))
     end
 
     it 'adds the passed paths' do
-      build_command[9..-1].should == %w(file1.rb file2.rb)
+      expect(build_command[9..-1]).to eq(%w(file1.rb file2.rb))
     end
   end
 
@@ -135,7 +135,7 @@ describe Guard::Rubocop::Runner do
       let(:options) { { cli: nil } }
 
       it 'returns empty array' do
-        runner.args_specified_by_user.should == []
+        expect(runner.args_specified_by_user).to eq([])
       end
     end
 
@@ -143,7 +143,7 @@ describe Guard::Rubocop::Runner do
       let(:options) { { cli: ['--out', 'output file.txt'] } }
 
       it 'just returns the array' do
-        runner.args_specified_by_user.should == ['--out', 'output file.txt']
+        expect(runner.args_specified_by_user).to eq(['--out', 'output file.txt'])
       end
     end
 
@@ -151,7 +151,7 @@ describe Guard::Rubocop::Runner do
       let(:options) { { cli: '--out "output file.txt"' } }
 
       it 'returns an array from String#shellsplit' do
-        runner.args_specified_by_user.should == ['--out', 'output file.txt']
+        expect(runner.args_specified_by_user).to eq(['--out', 'output file.txt'])
       end
     end
 
@@ -172,7 +172,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --debug) }
 
         it 'returns true' do
-          include_formatter_for_console?.should be_true
+          expect(include_formatter_for_console?).to be_true
         end
       end
 
@@ -180,7 +180,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --out simple.txt) }
 
         it 'returns false' do
-          include_formatter_for_console?.should be_false
+          expect(include_formatter_for_console?).to be_false
         end
       end
 
@@ -188,7 +188,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --debug --out simple.txt) }
 
         it 'returns false' do
-          include_formatter_for_console?.should be_false
+          expect(include_formatter_for_console?).to be_false
         end
       end
     end
@@ -198,7 +198,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --out simple.txt --format emacs --out emacs.txt) }
 
         it 'returns false' do
-          include_formatter_for_console?.should be_false
+          expect(include_formatter_for_console?).to be_false
         end
       end
 
@@ -206,7 +206,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --format emacs --out emacs.txt) }
 
         it 'returns true' do
-          include_formatter_for_console?.should be_true
+          expect(include_formatter_for_console?).to be_true
         end
       end
 
@@ -214,7 +214,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --format emacs) }
 
         it 'returns true' do
-          include_formatter_for_console?.should be_true
+          expect(include_formatter_for_console?).to be_true
         end
       end
     end
@@ -223,14 +223,14 @@ describe Guard::Rubocop::Runner do
       let(:args) { %w(--debug) }
 
       it 'returns false' do
-        include_formatter_for_console?.should be_false
+        expect(include_formatter_for_console?).to be_false
       end
     end
   end
 
   describe '#json_file_path' do
     it 'is not world readable' do
-      File.world_readable?(runner.json_file_path).should be_false
+      expect(File.world_readable?(runner.json_file_path)).to be_false
     end
   end
 
@@ -283,13 +283,13 @@ describe Guard::Rubocop::Runner do
 
   describe '#result', :json_file do
     it 'parses JSON file' do
-      runner.result[:summary][:offence_count].should == 2
+      expect(runner.result[:summary][:offence_count]).to eq(2)
     end
   end
 
   describe '#notify' do
     before do
-      runner.stub(:result).and_return(
+      allow(runner).to receive(:result).and_return(
         {
           summary: {
             offence_count: 4,
@@ -301,23 +301,23 @@ describe Guard::Rubocop::Runner do
     end
 
     it 'notifies summary' do
-      Guard::Notifier.should_receive(:notify) do |message, options|
-        message.should == '2 files inspected, 4 offences detected'
+      expect(Guard::Notifier).to receive(:notify) do |message, options|
+        expect(message).to eq('2 files inspected, 4 offences detected')
       end
       runner.notify(true)
     end
 
     it 'notifies with title "RuboCop results"' do
-      Guard::Notifier.should_receive(:notify) do |message, options|
-        options[:title].should == 'RuboCop results'
+      expect(Guard::Notifier).to receive(:notify) do |message, options|
+        expect(options[:title]).to eq('RuboCop results')
       end
       runner.notify(true)
     end
 
     context 'when passed' do
       it 'shows success image' do
-        Guard::Notifier.should_receive(:notify) do |message, options|
-          options[:image].should == :success
+        expect(Guard::Notifier).to receive(:notify) do |message, options|
+          expect(options[:image]).to eq(:success)
         end
         runner.notify(true)
       end
@@ -325,8 +325,8 @@ describe Guard::Rubocop::Runner do
 
     context 'when failed' do
       it 'shows failed image' do
-        Guard::Notifier.should_receive(:notify) do |message, options|
-          options[:image].should == :failed
+        expect(Guard::Notifier).to receive(:notify) do |message, options|
+          expect(options[:image]).to eq(:failed)
         end
         runner.notify(false)
       end
@@ -335,7 +335,7 @@ describe Guard::Rubocop::Runner do
 
   describe '#summary_text' do
     before do
-      runner.stub(:result).and_return(
+      allow(runner).to receive(:result).and_return(
         {
           summary: {
             offence_count: offence_count,
@@ -355,49 +355,49 @@ describe Guard::Rubocop::Runner do
     context 'when no files are inspected' do
       let(:inspected_file_count) { 0 }
       it 'includes "0 files"' do
-        summary_text.should include '0 files'
+        expect(summary_text).to include '0 files'
       end
     end
 
     context 'when a file is inspected' do
       let(:inspected_file_count) { 1 }
       it 'includes "1 file"' do
-        summary_text.should include '1 file'
+        expect(summary_text).to include '1 file'
       end
     end
 
     context 'when 2 files are inspected' do
       let(:inspected_file_count) { 2 }
       it 'includes "2 files"' do
-        summary_text.should include '2 files'
+        expect(summary_text).to include '2 files'
       end
     end
 
     context 'when no offences are detected' do
       let(:offence_count) { 0 }
       it 'includes "no offences"' do
-        summary_text.should include 'no offences'
+        expect(summary_text).to include 'no offences'
       end
     end
 
     context 'when an offence is detected' do
       let(:offence_count) { 1 }
       it 'includes "1 offence"' do
-        summary_text.should include '1 offence'
+        expect(summary_text).to include '1 offence'
       end
     end
 
     context 'when 2 offences are detected' do
       let(:offence_count) { 2 }
       it 'includes "2 offences"' do
-        summary_text.should include '2 offences'
+        expect(summary_text).to include '2 offences'
       end
     end
   end
 
   describe '#failed_paths', :json_file do
     it 'returns file paths which have offences' do
-      runner.failed_paths.should == ['lib/bar.rb']
+      expect(runner.failed_paths).to eq(['lib/bar.rb'])
     end
   end
 end
