@@ -98,7 +98,12 @@ describe Guard::Rubocop, :silence_output do
 
   describe '#run_on_changes', :processes_after_running do
     subject { super().run_on_changes(changed_paths) }
-    let(:changed_paths) { ['some.rb', 'dir/another.rb', 'dir/../some.rb'] }
+    let(:changed_paths) do
+      [
+        'lib/guard/rubocop.rb',
+        'spec/spec_helper.rb'
+      ]
+    end
 
     before do
       allow_any_instance_of(Guard::Rubocop::Runner).to receive(:run).and_return(true)
@@ -120,7 +125,18 @@ describe Guard::Rubocop, :silence_output do
       guard.run_on_changes(changed_paths)
     end
 
-    let(:failed_path) { File.expand_path('failed_file_last_time.rb') }
+    context 'when cleaned paths are empty' do
+      before do
+        allow(guard).to receive(:clean_paths).and_return([])
+      end
+
+      it 'does nothing' do
+        expect_any_instance_of(Guard::Rubocop::Runner).not_to receive(:run)
+        guard.run_on_changes(changed_paths)
+      end
+    end
+
+    let(:failed_path) { File.expand_path('Rakefile') }
 
     context 'when :keep_failed option is enabled' do
       let(:options) { { keep_failed: true } }
@@ -136,12 +152,6 @@ describe Guard::Rubocop, :silence_output do
 
     context 'when :keep_failed option is disabled' do
       let(:options) { { keep_failed: false } }
-      let(:changed_paths) do
-        [
-          File.expand_path('some.rb'),
-          File.expand_path('dir/another.rb')
-        ]
-      end
 
       it 'inspects just changed paths' do
         guard.failed_paths << failed_path
@@ -178,6 +188,18 @@ describe Guard::Rubocop, :silence_output do
         'lib/guard/rubocop.rb',
         'spec/spec_helper.rb',
         'lib/guard/../guard/rubocop.rb'
+      ]
+      expect(guard.clean_paths(paths)).to eq([
+        File.expand_path('lib/guard/rubocop.rb'),
+        File.expand_path('spec/spec_helper.rb')
+      ])
+    end
+
+    it 'removes non-existent paths' do
+      paths = [
+        'lib/guard/rubocop.rb',
+        'path/to/non_existent_file.rb',
+        'spec/spec_helper.rb'
       ]
       expect(guard.clean_paths(paths)).to eq([
         File.expand_path('lib/guard/rubocop.rb'),

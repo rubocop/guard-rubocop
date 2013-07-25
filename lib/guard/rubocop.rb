@@ -37,6 +37,8 @@ module Guard
       paths += @failed_paths if @options[:keep_failed]
       paths = clean_paths(paths)
 
+      return if paths.empty?
+
       displayed_paths = paths.map { |path| smart_path(path) }
       UI.info "Inspecting Ruby code style: #{displayed_paths.join(' ')}"
 
@@ -52,6 +54,7 @@ module Guard
       paths.map! { |path| File.expand_path(path) }
       paths.uniq!
       paths.reject! do |path|
+        next true unless File.exists?(path)
         included_in_other_path?(path, paths)
       end
       paths
