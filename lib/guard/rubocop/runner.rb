@@ -69,7 +69,7 @@ module Guard
       end
 
       def json_file_path
-        @tempfile_path ||= begin
+        @json_file_path ||= begin
           # Just generate random tempfile path.
           basename = self.class.name.downcase.gsub('::', '_')
           tempfile = Tempfile.new(basename)
