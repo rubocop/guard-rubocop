@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.1
+
+* Fix exception when any file is deleted
+
 ## v0.2.0
 
 * Add `:cli` option which allows to specify additional command line arguments
