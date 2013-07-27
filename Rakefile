@@ -20,7 +20,7 @@ task :style do
   sh('rubocop')
 end
 
-desc 'Run RSpec code examples and check code style with RuboCop'
+desc 'Run RSpec and RuboCop'
 task all: [:spec, :style]
 
 task default: :all
