@@ -7,7 +7,7 @@ require 'guard/rubocop/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'guard-rubocop'
-  spec.version       = Guard::RubocopVersion::VERSION
+  spec.version       = Guard::RubocopVersion.to_s
   spec.authors       = ['Yuji Nakayama']
   spec.email         = ['nkymyj@gmail.com']
   spec.summary       = 'Guard plugin for RuboCop'
