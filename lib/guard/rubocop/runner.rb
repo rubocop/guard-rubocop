@@ -56,9 +56,7 @@ module Guard
       def include_formatter_for_console?(cli_args)
         index = -1
         formatter_args = cli_args.group_by do |arg|
-          if %w(-f --format).include?(arg)
-            index += 1
-          end
+          index += 1 if %w(-f --format).include?(arg)
           index
         end
         formatter_args.delete(-1)
