@@ -56,13 +56,13 @@ module Guard
       def include_formatter_for_console?(cli_args)
         index = -1
         formatter_args = cli_args.group_by do |arg|
-          index += 1 if %w(-f --format).include?(arg)
+          index += 1 if arg == '--format' || arg.start_with?('-f')
           index
         end
         formatter_args.delete(-1)
 
         formatter_args.each_value.any? do |args|
-          args.none? { |a| %w(-o --out).include?(a) }
+          args.none? { |a| a == '--out' || a.start_with?('-o') }
         end
       end
 

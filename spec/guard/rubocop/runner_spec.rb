@@ -193,6 +193,24 @@ describe Guard::Rubocop::Runner do
       end
     end
 
+    context 'when the passed args include a -f with its arg without separator' do
+      context 'but does not include an -o/--output' do
+        let(:args) { %w(-fs --debug) }
+
+        it 'returns true' do
+          expect(include_formatter_for_console?).to be_true
+        end
+      end
+
+      context 'and include an -o with its arg without separator just after the -f/--format' do
+        let(:args) { %w(-fs -osimple.txt) }
+
+        it 'returns false' do
+          expect(include_formatter_for_console?).to be_false
+        end
+      end
+    end
+
     context 'when the passed args include multiple -f/--format' do
       context 'and all -f/--format have associated -o/--out' do
         let(:args) { %w(--format simple --out simple.txt --format emacs --out emacs.txt) }
