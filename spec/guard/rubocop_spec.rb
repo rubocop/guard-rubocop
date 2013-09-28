@@ -3,8 +3,7 @@
 require 'spec_helper.rb'
 
 describe Guard::Rubocop, :silence_output do
-  subject(:guard) { Guard::Rubocop.new(watchers, options) }
-  let(:watchers) { [] }
+  subject(:guard) { Guard::Rubocop.new(options) }
   let(:options) { {} }
 
   describe '#options' do

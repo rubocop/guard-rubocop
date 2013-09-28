@@ -1,17 +1,17 @@
 # coding: utf-8
 
 require 'guard'
-require 'guard/guard'
+require 'guard/plugin'
 
 module Guard
   # This class gets API calls from `guard` and runs `rubocop` command via {Guard::Rubocop::Runner}.
   # An instance of this class stays alive in a `guard` command session.
-  class Rubocop < Guard
+  class Rubocop < Plugin
     autoload :Runner, 'guard/rubocop/runner'
 
     attr_reader :options, :failed_paths
 
-    def initialize(watchers = [], options = {})
+    def initialize(options = {})
       super
 
       @options = {
