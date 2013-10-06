@@ -2,6 +2,10 @@
 
 ## Master
 
+## v1.0.0
+
+* Support Guard 2.0
+
 ## v0.2.2
 
 * Fix a bug where `progress` formatter was used when `-f` and its argument were specified without separator in `:cli` option in `Guardfile` (e.g. `-fs`)

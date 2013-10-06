@@ -5,9 +5,9 @@ module Guard
   # before `class Rubocop < Guard` in rubocop.rb
   module RubocopVersion
     # http://semver.org/
-    MAJOR = 0
-    MINOR = 2
-    PATCH = 2
+    MAJOR = 1
+    MINOR = 0
+    PATCH = 0
 
     def self.to_s
       [MAJOR, MINOR, PATCH].join('.')
