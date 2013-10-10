@@ -2,15 +2,11 @@
 
 require 'json'
 
-# rubocop:disable Documentation
 module Guard
   class Rubocop
     # This class runs `rubocop` command, retrieves result and notifies.
     # An instance of this class is intended to invoke `rubocop` only once in its lifetime.
     class Runner
-      # rubocop:enable Documentation
-
-      #
       def initialize(options)
         @options = options
       end
