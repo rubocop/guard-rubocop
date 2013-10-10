@@ -4,3 +4,7 @@ inherit_from: ../.rubocop.yml
 # for `should ==`
 Void:
   Enabled: false
+
+# Sometimes I want to indicate that “This is a hash” explicitly with #and_return.
+BracesAroundHashParameters:
+  Enabled: false
