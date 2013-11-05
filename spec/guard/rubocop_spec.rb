@@ -11,10 +11,26 @@ describe Guard::Rubocop, :silence_output do
 
     context 'by default' do
       let(:options) { {} }
-      its([:all_on_start]) { should be_true }
-      its([:keep_failed])  { should be_true }
-      its([:notification]) { should == :failed }
-      its([:cli])          { should be_nil }
+
+      describe '[:all_on_start]' do
+        subject { super()[:all_on_start] }
+        it { should be_true }
+      end
+
+      describe '[:keep_failed]' do
+        subject { super()[:keep_failed] }
+        it { should be_true }
+      end
+
+      describe '[:notification]' do
+        subject { super()[:notification] }
+        it { should == :failed }
+      end
+
+      describe '[:cli]' do
+        subject { super()[:cli] }
+        it { should be_nil }
+      end
     end
   end
 
