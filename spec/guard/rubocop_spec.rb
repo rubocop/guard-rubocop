@@ -111,8 +111,8 @@ describe Guard::Rubocop, :silence_output do
     end
   end
 
-  describe '#run_on_changes', :processes_after_running do
-    subject { super().run_on_changes(changed_paths) }
+  describe '#run_on_modifications', :processes_after_running do
+    subject { super().run_on_modifications(changed_paths) }
     let(:changed_paths) do
       [
         'lib/guard/rubocop.rb',
@@ -127,7 +127,7 @@ describe Guard::Rubocop, :silence_output do
 
     it 'inspects changed files with rubocop' do
       expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run)
-      guard.run_on_changes(changed_paths)
+      guard.run_on_modifications(changed_paths)
     end
 
     it 'passes cleaned paths to rubocop' do
@@ -137,7 +137,7 @@ describe Guard::Rubocop, :silence_output do
           File.expand_path('dir/another.rb')
         ])
       end
-      guard.run_on_changes(changed_paths)
+      guard.run_on_modifications(changed_paths)
     end
 
     context 'when cleaned paths are empty' do
@@ -147,7 +147,7 @@ describe Guard::Rubocop, :silence_output do
 
       it 'does nothing' do
         expect_any_instance_of(Guard::Rubocop::Runner).not_to receive(:run)
-        guard.run_on_changes(changed_paths)
+        guard.run_on_modifications(changed_paths)
       end
     end
 
@@ -161,7 +161,7 @@ describe Guard::Rubocop, :silence_output do
         expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
           expect(paths).to include failed_path
         end
-        guard.run_on_changes(changed_paths)
+        guard.run_on_modifications(changed_paths)
       end
     end
 
@@ -173,7 +173,7 @@ describe Guard::Rubocop, :silence_output do
         expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
           expect(paths).to eq(changed_paths)
         end
-        guard.run_on_changes(changed_paths)
+        guard.run_on_modifications(changed_paths)
       end
     end
   end
