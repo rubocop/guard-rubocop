@@ -1,6 +1,8 @@
 # Changelog
 
-## Master
+## Development
+
+* Fix inappripriate multiple run on a save with Vim ([#6](https://github.com/yujinakayama/guard-rubocop/pull/6))
 
 ## v1.0.0
 
