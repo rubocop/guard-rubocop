@@ -111,69 +111,71 @@ describe Guard::Rubocop, :silence_output do
     end
   end
 
-  describe '#run_on_changes', :processes_after_running do
-    subject { super().run_on_changes(changed_paths) }
-    let(:changed_paths) do
-      [
-        'lib/guard/rubocop.rb',
-        'spec/spec_helper.rb'
-      ]
-    end
-
-    before do
-      allow_any_instance_of(Guard::Rubocop::Runner).to receive(:run).and_return(true)
-      allow_any_instance_of(Guard::Rubocop::Runner).to receive(:failed_paths).and_return([])
-    end
-
-    it 'inspects changed files with rubocop' do
-      expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run)
-      guard.run_on_changes(changed_paths)
-    end
-
-    it 'passes cleaned paths to rubocop' do
-      expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
-        expect(paths).to eq([
-          File.expand_path('some.rb'),
-          File.expand_path('dir/another.rb')
-        ])
+  [:run_on_additions, :run_on_modifications].each do |method|
+    describe "##{method}", :processes_after_running do
+      subject { super().send(method, changed_paths) }
+      let(:changed_paths) do
+        [
+          'lib/guard/rubocop.rb',
+          'spec/spec_helper.rb'
+        ]
       end
-      guard.run_on_changes(changed_paths)
-    end
 
-    context 'when cleaned paths are empty' do
       before do
-        allow(guard).to receive(:clean_paths).and_return([])
+        allow_any_instance_of(Guard::Rubocop::Runner).to receive(:run).and_return(true)
+        allow_any_instance_of(Guard::Rubocop::Runner).to receive(:failed_paths).and_return([])
       end
 
-      it 'does nothing' do
-        expect_any_instance_of(Guard::Rubocop::Runner).not_to receive(:run)
-        guard.run_on_changes(changed_paths)
+      it 'inspects changed files with rubocop' do
+        expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run)
+        subject
       end
-    end
 
-    let(:failed_path) { File.expand_path('Rakefile') }
-
-    context 'when :keep_failed option is enabled' do
-      let(:options) { { keep_failed: true } }
-
-      it 'also inspects paths which are failed last time' do
-        guard.failed_paths << failed_path
+      it 'passes cleaned paths to rubocop' do
         expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
-          expect(paths).to include failed_path
+          expect(paths).to eq([
+            File.expand_path('some.rb'),
+            File.expand_path('dir/another.rb')
+          ])
         end
-        guard.run_on_changes(changed_paths)
+        subject
       end
-    end
 
-    context 'when :keep_failed option is disabled' do
-      let(:options) { { keep_failed: false } }
-
-      it 'inspects just changed paths' do
-        guard.failed_paths << failed_path
-        expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
-          expect(paths).to eq(changed_paths)
+      context 'when cleaned paths are empty' do
+        before do
+          allow(guard).to receive(:clean_paths).and_return([])
         end
-        guard.run_on_changes(changed_paths)
+
+        it 'does nothing' do
+          expect_any_instance_of(Guard::Rubocop::Runner).not_to receive(:run)
+          subject
+        end
+      end
+
+      let(:failed_path) { File.expand_path('Rakefile') }
+
+      context 'when :keep_failed option is enabled' do
+        let(:options) { { keep_failed: true } }
+
+        it 'also inspects paths which are failed last time' do
+          guard.failed_paths << failed_path
+          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
+            expect(paths).to include failed_path
+          end
+          subject
+        end
+      end
+
+      context 'when :keep_failed option is disabled' do
+        let(:options) { { keep_failed: false } }
+
+        it 'inspects just changed paths' do
+          guard.failed_paths << failed_path
+          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
+            expect(paths).to eq(changed_paths)
+          end
+          subject
+        end
       end
     end
   end

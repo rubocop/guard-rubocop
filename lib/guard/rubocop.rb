@@ -30,19 +30,15 @@ module Guard
 
     def run_all
       UI.info 'Inspecting Ruby code style of all files'
-      run
+      inspect_with_rubocop
     end
 
-    def run_on_changes(paths)
-      paths += @failed_paths if @options[:keep_failed]
-      paths = clean_paths(paths)
+    def run_on_additions(paths)
+      run_partially(paths)
+    end
 
-      return if paths.empty?
-
-      displayed_paths = paths.map { |path| smart_path(path) }
-      UI.info "Inspecting Ruby code style: #{displayed_paths.join(' ')}"
-
-      run(paths)
+    def run_on_modifications(paths)
+      run_partially(paths)
     end
 
     def reload
@@ -62,7 +58,19 @@ module Guard
 
     private
 
-    def run(paths = [])
+    def run_partially(paths)
+      paths += @failed_paths if @options[:keep_failed]
+      paths = clean_paths(paths)
+
+      return if paths.empty?
+
+      displayed_paths = paths.map { |path| smart_path(path) }
+      UI.info "Inspecting Ruby code style: #{displayed_paths.join(' ')}"
+
+      inspect_with_rubocop(paths)
+    end
+
+    def inspect_with_rubocop(paths = [])
       runner = Runner.new(@options)
       passed = runner.run(paths)
       @failed_paths = runner.failed_paths
