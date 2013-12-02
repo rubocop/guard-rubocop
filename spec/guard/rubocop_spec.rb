@@ -189,12 +189,16 @@ describe Guard::Rubocop, :silence_output do
   end
 
   describe '#clean_paths' do
+    def clean_paths(path)
+      guard.send(:clean_paths, path)
+    end
+
     it 'converts to absolute paths' do
       paths = [
         'lib/guard/rubocop.rb',
         'spec/spec_helper.rb'
       ]
-      expect(guard.clean_paths(paths)).to eq([
+      expect(clean_paths(paths)).to eq([
         File.expand_path('lib/guard/rubocop.rb'),
         File.expand_path('spec/spec_helper.rb')
       ])
@@ -206,7 +210,7 @@ describe Guard::Rubocop, :silence_output do
         'spec/spec_helper.rb',
         'lib/guard/../guard/rubocop.rb'
       ]
-      expect(guard.clean_paths(paths)).to eq([
+      expect(clean_paths(paths)).to eq([
         File.expand_path('lib/guard/rubocop.rb'),
         File.expand_path('spec/spec_helper.rb')
       ])
@@ -218,7 +222,7 @@ describe Guard::Rubocop, :silence_output do
         'path/to/non_existent_file.rb',
         'spec/spec_helper.rb'
       ]
-      expect(guard.clean_paths(paths)).to eq([
+      expect(clean_paths(paths)).to eq([
         File.expand_path('lib/guard/rubocop.rb'),
         File.expand_path('spec/spec_helper.rb')
       ])
@@ -230,7 +234,7 @@ describe Guard::Rubocop, :silence_output do
         'spec/spec_helper.rb',
         'spec'
       ]
-      expect(guard.clean_paths(paths)).to eq([
+      expect(clean_paths(paths)).to eq([
         File.expand_path('lib/guard/rubocop.rb'),
         File.expand_path('spec')
       ])

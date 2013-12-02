@@ -45,17 +45,6 @@ module Guard
       @failed_paths = []
     end
 
-    def clean_paths(paths)
-      paths = paths.dup
-      paths.map! { |path| File.expand_path(path) }
-      paths.uniq!
-      paths.reject! do |path|
-        next true unless File.exists?(path)
-        included_in_other_path?(path, paths)
-      end
-      paths
-    end
-
     private
 
     def run_partially(paths)
@@ -78,6 +67,17 @@ module Guard
     rescue => error
       UI.error 'The following exception occurred while running guard-rubocop: ' +
                "#{error.backtrace.first} #{error.message} (#{error.class.name})"
+    end
+
+    def clean_paths(paths)
+      paths = paths.dup
+      paths.map! { |path| File.expand_path(path) }
+      paths.uniq!
+      paths.reject! do |path|
+        next true unless File.exists?(path)
+        included_in_other_path?(path, paths)
+      end
+      paths
     end
 
     def included_in_other_path?(target_path, other_paths)
