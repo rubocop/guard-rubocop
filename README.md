@@ -4,7 +4,7 @@
 
 Guard::Rubocop allows you to automatically check Ruby code style with [RuboCop](https://github.com/bbatsov/rubocop) when files are modified.
 
-Tested on MRI 1.9, MRI 2.0, JRuby and Rubinius in 1.9 modes.
+Tested on MRI 1.9, 2.0, 2.1, JRuby in 1.9 mode and Rubinius.
 
 ## Installation
 
