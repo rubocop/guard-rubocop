@@ -1,14 +1,23 @@
 # coding: utf-8
 
 shared_context 'silence output', silence_output: true do
-  before do
-    null_output = double('output').as_null_object
+  null_object = BasicObject.new
 
+  class << null_object
+    # #respond_to_missing? does not work.
+    def respond_to?(*)
+      true
+    end
+
+    def method_missing(*)
+    end
+  end
+
+  before do
     @original_stdout = $stdout
     @original_stderr = $stderr
-
-    $stdout = null_output
-    $stderr = null_output
+    $stdout = null_object
+    $stderr = null_object
   end
 
   after do
