@@ -5,7 +5,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.mock_with :rspec do |c|
+    c.syntax = :expect
+  end
 end
 
 Dir[File.join(File.dirname(__FILE__), 'support', '*')].each do |path|

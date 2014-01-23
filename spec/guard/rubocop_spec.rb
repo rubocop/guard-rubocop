@@ -14,12 +14,12 @@ describe Guard::Rubocop, :silence_output do
 
       describe '[:all_on_start]' do
         subject { super()[:all_on_start] }
-        it { should be_true }
+        it { should be_truthy }
       end
 
       describe '[:keep_failed]' do
         subject { super()[:keep_failed] }
-        it { should be_true }
+        it { should be_truthy }
       end
 
       describe '[:notification]' do
@@ -132,7 +132,7 @@ describe Guard::Rubocop, :silence_output do
       end
 
       it 'passes cleaned paths to rubocop' do
-        expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
+        expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |instance, paths|
           expect(paths).to eq([
             File.expand_path('some.rb'),
             File.expand_path('dir/another.rb')
@@ -159,7 +159,7 @@ describe Guard::Rubocop, :silence_output do
 
         it 'also inspects paths which are failed last time' do
           guard.failed_paths << failed_path
-          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
+          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |instance, paths|
             expect(paths).to include failed_path
           end
           subject
@@ -171,7 +171,7 @@ describe Guard::Rubocop, :silence_output do
 
         it 'inspects just changed paths' do
           guard.failed_paths << failed_path
-          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |paths|
+          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |instance, paths|
             expect(paths).to eq(changed_paths)
           end
           subject
