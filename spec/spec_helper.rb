@@ -6,6 +6,10 @@ RSpec.configure do |config|
   end
 
   config.treat_symbols_as_metadata_keys_with_true_values = true
+
+  config.mock_with :rspec do |c|
+    c.yield_receiver_to_any_instance_implementation_blocks = true
+  end
 end
 
 Dir[File.join(File.dirname(__FILE__), 'support', '*')].each do |path|

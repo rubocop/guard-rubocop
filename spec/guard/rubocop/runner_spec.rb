@@ -25,14 +25,14 @@ describe Guard::Rubocop::Runner do
       before do
         allow(runner).to receive(:system).and_return(true)
       end
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context 'when RuboCop exited with non 0 status' do
       before do
         allow(runner).to receive(:system).and_return(false)
       end
-      it { should be_false }
+      it { should be_falsey }
     end
 
     shared_examples 'notifies', :notifies do
@@ -172,7 +172,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --debug) }
 
         it 'returns true' do
-          expect(include_formatter_for_console?).to be_true
+          expect(include_formatter_for_console?).to be_truthy
         end
       end
 
@@ -180,7 +180,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --out simple.txt) }
 
         it 'returns false' do
-          expect(include_formatter_for_console?).to be_false
+          expect(include_formatter_for_console?).to be_falsey
         end
       end
 
@@ -188,7 +188,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --debug --out simple.txt) }
 
         it 'returns false' do
-          expect(include_formatter_for_console?).to be_false
+          expect(include_formatter_for_console?).to be_falsey
         end
       end
     end
@@ -198,7 +198,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(-fs --debug) }
 
         it 'returns true' do
-          expect(include_formatter_for_console?).to be_true
+          expect(include_formatter_for_console?).to be_truthy
         end
       end
 
@@ -206,7 +206,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(-fs -osimple.txt) }
 
         it 'returns false' do
-          expect(include_formatter_for_console?).to be_false
+          expect(include_formatter_for_console?).to be_falsey
         end
       end
     end
@@ -216,7 +216,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --out simple.txt --format emacs --out emacs.txt) }
 
         it 'returns false' do
-          expect(include_formatter_for_console?).to be_false
+          expect(include_formatter_for_console?).to be_falsey
         end
       end
 
@@ -224,7 +224,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --format emacs --out emacs.txt) }
 
         it 'returns true' do
-          expect(include_formatter_for_console?).to be_true
+          expect(include_formatter_for_console?).to be_truthy
         end
       end
 
@@ -232,7 +232,7 @@ describe Guard::Rubocop::Runner do
         let(:args) { %w(--format simple --format emacs) }
 
         it 'returns true' do
-          expect(include_formatter_for_console?).to be_true
+          expect(include_formatter_for_console?).to be_truthy
         end
       end
     end
@@ -241,14 +241,14 @@ describe Guard::Rubocop::Runner do
       let(:args) { %w(--debug) }
 
       it 'returns false' do
-        expect(include_formatter_for_console?).to be_false
+        expect(include_formatter_for_console?).to be_falsey
       end
     end
   end
 
   describe '#json_file_path' do
     it 'is not world readable' do
-      expect(File.world_readable?(runner.json_file_path)).to be_false
+      expect(File.world_readable?(runner.json_file_path)).to be_falsey
     end
   end
 
