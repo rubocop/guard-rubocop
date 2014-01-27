@@ -67,6 +67,31 @@ notification: :failed  # Display Growl notification after each run.
                        #   default: :failed
 ```
 
+## Advanced Tips
+
+If you're using a testing Guard plugin such as [`guard-rspec`](https://github.com/guard/guard-rspec) together with `guard-rubocop` in the TDD way (the red-green-refactor cycle),
+you might be uncomfortable with the offence reports from RuboCop in the red-green phase:
+
+* In the red-green phase, you're not necessarily required to write clean code – you just focus writing code to pass the test. It means, in this phase, `guard-rspec` should be run but `guard-rubocop` should not.
+* In the refactor phase, you're required to make the code clean while keeping the test passing. In this phase, both `guard-rspec` and `guard-rubocop` should be run.
+
+In this case, you may think the following `Guardfile` structure useful:
+
+```ruby
+# This group allows to skip running RuboCop when RSpec failed.
+group :red_green_refactor, halt_on_fail: true do
+  guard :rspec do
+    # ...
+  end
+
+  guard :rubocop do
+    # ...
+  end
+end
+```
+
+Note: You need to use `guard-rspec` 4.2.3 or later due to a [bug](https://github.com/guard/guard-rspec/pull/234) where it unintentionally fails when there are no spec files to be run.
+
 ## Contributing
 
 1. Fork it
