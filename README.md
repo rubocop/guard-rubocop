@@ -55,7 +55,7 @@ end
 ```ruby
 all_on_start: true     # Check all files at Guard startup.
                        #   default: true
-cli: ['--rails']       # Pass arbitrary RuboCop CLI arguments.
+cli: '--rails'         # Pass arbitrary RuboCop CLI arguments.
                        # An array or string is acceptable.
                        #   default: nil
 keep_failed: true      # Keep failed files until they pass.
