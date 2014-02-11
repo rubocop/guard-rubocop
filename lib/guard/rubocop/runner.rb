@@ -92,13 +92,13 @@ module Guard
         text = pluralize(summary[:inspected_file_count], 'file')
         text << ' inspected, '
 
-        text << pluralize(summary[:offence_count], 'offence', no_for_zero: true)
+        text << pluralize(summary[:offense_count], 'offense', no_for_zero: true)
         text << ' detected'
       end
 
       def failed_paths
         failed_files = result[:files].reject do |file|
-          file[:offences].empty?
+          file[:offenses].empty?
         end
         failed_files.map do |file|
           file[:path]

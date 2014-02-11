@@ -265,10 +265,10 @@ describe Guard::Rubocop::Runner do
           },
           "files": [{
               "path": "lib/foo.rb",
-              "offences": []
+              "offenses": []
             }, {
               "path": "lib/bar.rb",
-              "offences": [{
+              "offenses": [{
                   "severity": "convention",
                   "message": "Line is too long. [81/79]",
                   "cop_name": "LineLength",
@@ -289,7 +289,7 @@ describe Guard::Rubocop::Runner do
             }
           ],
           "summary": {
-            "offence_count": 2,
+            "offense_count": 2,
             "target_file_count": 2,
             "inspected_file_count": 2
           }
@@ -301,7 +301,7 @@ describe Guard::Rubocop::Runner do
 
   describe '#result', :json_file do
     it 'parses JSON file' do
-      expect(runner.result[:summary][:offence_count]).to eq(2)
+      expect(runner.result[:summary][:offense_count]).to eq(2)
     end
   end
 
@@ -310,7 +310,7 @@ describe Guard::Rubocop::Runner do
       allow(runner).to receive(:result).and_return(
         {
           summary: {
-            offence_count: 4,
+            offense_count: 4,
             target_file_count: 3,
             inspected_file_count: 2
           }
@@ -320,7 +320,7 @@ describe Guard::Rubocop::Runner do
 
     it 'notifies summary' do
       expect(Guard::Notifier).to receive(:notify) do |message, options|
-        expect(message).to eq('2 files inspected, 4 offences detected')
+        expect(message).to eq('2 files inspected, 4 offenses detected')
       end
       runner.notify(true)
     end
@@ -356,7 +356,7 @@ describe Guard::Rubocop::Runner do
       allow(runner).to receive(:result).and_return(
         {
           summary: {
-            offence_count: offence_count,
+            offense_count: offense_count,
             target_file_count: target_file_count,
             inspected_file_count: inspected_file_count
           }
@@ -366,7 +366,7 @@ describe Guard::Rubocop::Runner do
 
     subject(:summary_text) { runner.summary_text }
 
-    let(:offence_count)        { 0 }
+    let(:offense_count)        { 0 }
     let(:target_file_count)    { 0 }
     let(:inspected_file_count) { 0 }
 
@@ -391,30 +391,30 @@ describe Guard::Rubocop::Runner do
       end
     end
 
-    context 'when no offences are detected' do
-      let(:offence_count) { 0 }
-      it 'includes "no offences"' do
-        expect(summary_text).to include 'no offences'
+    context 'when no offenses are detected' do
+      let(:offense_count) { 0 }
+      it 'includes "no offenses"' do
+        expect(summary_text).to include 'no offenses'
       end
     end
 
-    context 'when an offence is detected' do
-      let(:offence_count) { 1 }
-      it 'includes "1 offence"' do
-        expect(summary_text).to include '1 offence'
+    context 'when an offense is detected' do
+      let(:offense_count) { 1 }
+      it 'includes "1 offense"' do
+        expect(summary_text).to include '1 offense'
       end
     end
 
-    context 'when 2 offences are detected' do
-      let(:offence_count) { 2 }
-      it 'includes "2 offences"' do
-        expect(summary_text).to include '2 offences'
+    context 'when 2 offenses are detected' do
+      let(:offense_count) { 2 }
+      it 'includes "2 offenses"' do
+        expect(summary_text).to include '2 offenses'
       end
     end
   end
 
   describe '#failed_paths', :json_file do
-    it 'returns file paths which have offences' do
+    it 'returns file paths which have offenses' do
       expect(runner.failed_paths).to eq(['lib/bar.rb'])
     end
   end

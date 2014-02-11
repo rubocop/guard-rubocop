@@ -70,7 +70,7 @@ notification: :failed  # Display Growl notification after each run.
 ## Advanced Tips
 
 If you're using a testing Guard plugin such as [`guard-rspec`](https://github.com/guard/guard-rspec) together with `guard-rubocop` in the TDD way (the red-green-refactor cycle),
-you might be uncomfortable with the offence reports from RuboCop in the red-green phase:
+you might be uncomfortable with the offense reports from RuboCop in the red-green phase:
 
 * In the red-green phase, you're not necessarily required to write clean code – you just focus writing code to pass the test. It means, in this phase, `guard-rspec` should be run but `guard-rubocop` should not.
 * In the refactor phase, you're required to make the code clean while keeping the test passing. In this phase, both `guard-rspec` and `guard-rubocop` should be run.
