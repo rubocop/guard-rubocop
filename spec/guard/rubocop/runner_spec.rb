@@ -411,11 +411,68 @@ describe Guard::Rubocop::Runner do
         expect(summary_text).to include '2 offenses'
       end
     end
+
+    context 'with spelling "offence" in old RuboCop' do
+      before do
+        allow(runner).to receive(:result).and_return(
+          {
+            summary: {
+              offence_count: 2,
+              target_file_count: 1,
+              inspected_file_count: 1
+            }
+          }
+        )
+      end
+
+      it 'handles the spelling' do
+        expect(summary_text).to include '2 offenses'
+      end
+    end
   end
 
   describe '#failed_paths', :json_file do
     it 'returns file paths which have offenses' do
       expect(runner.failed_paths).to eq(['lib/bar.rb'])
+    end
+
+    context 'with spelling "offence" in old RuboCop' do
+      before do
+        json = <<-END
+          {
+            "files": [{
+                "path": "lib/foo.rb",
+                "offences": []
+              }, {
+                "path": "lib/bar.rb",
+                "offences": [{
+                    "severity": "convention",
+                    "message": "Line is too long. [81/79]",
+                    "cop_name": "LineLength",
+                    "location": {
+                      "line": 546,
+                      "column": 80
+                    }
+                  }, {
+                    "severity": "warning",
+                    "message": "Unreachable code detected.",
+                    "cop_name": "UnreachableCode",
+                    "location": {
+                      "line": 15,
+                      "column": 9
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        END
+        File.write(runner.json_file_path, json)
+      end
+
+      it 'handles the spelling' do
+        expect(runner.failed_paths).to eq(['lib/bar.rb'])
+      end
     end
   end
 end

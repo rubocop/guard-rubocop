@@ -2,6 +2,8 @@
 
 ## Development
 
+* Support both spelling “offense” (RuboCop 0.19 or later) and “offence” (prior to RuboCop 0.19) ([rubocop#700](https://github.com/bbatsov/rubocop/issues/700))
+
 ## v1.0.1
 
 * Fix inappripriate multiple run on a save with Vim ([#6](https://github.com/yujinakayama/guard-rubocop/pull/6))
