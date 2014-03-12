@@ -18,7 +18,8 @@ module Guard
         all_on_start: true,
         keep_failed:  true,
         notification: :failed,
-        cli: nil
+        cli: nil,
+        run_all: true
       }.merge(options)
 
       @failed_paths = []
@@ -29,8 +30,12 @@ module Guard
     end
 
     def run_all
-      UI.info 'Inspecting Ruby code style of all files'
-      inspect_with_rubocop
+      if @options[:run_all]
+        UI.info 'Inspecting Ruby code style of all files'
+        inspect_with_rubocop
+      else
+        UI.info 'Guard is not allowed to inspect Ruby code style of all files'
+      end
     end
 
     def run_on_additions(paths)

@@ -31,6 +31,11 @@ describe Guard::Rubocop, :silence_output do
         subject { super()[:cli] }
         it { should be_nil }
       end
+
+      describe '[:run_all]' do
+        subject { super()[:run_all] }
+        it { should be_truthy }
+      end
     end
   end
 
@@ -108,6 +113,15 @@ describe Guard::Rubocop, :silence_output do
     it 'inspects all files with rubocop' do
       expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run).with([])
       guard.run_all
+    end
+
+    context 'when run_all is disabled' do
+      let(:options) { { run_all: false } }
+
+      it 'does not inspect all files with rubocop' do
+        expect_any_instance_of(Guard::Rubocop::Runner).to_not receive(:run)
+        guard.run_all
+      end
     end
   end
 
