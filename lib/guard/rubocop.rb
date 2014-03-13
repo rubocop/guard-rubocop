@@ -65,7 +65,7 @@ module Guard
       @failed_paths = runner.failed_paths
       throw :task_has_failed unless passed
     rescue => error
-      UI.error 'The following exception occurred while running guard-rubocop: ' +
+      UI.error 'The following exception occurred while running guard-rubocop: ' \
                "#{error.backtrace.first} #{error.message} (#{error.class.name})"
     end
 
@@ -74,7 +74,7 @@ module Guard
       paths.map! { |path| File.expand_path(path) }
       paths.uniq!
       paths.reject! do |path|
-        next true unless File.exists?(path)
+        next true unless File.exist?(path)
         included_in_other_path?(path, paths)
       end
       paths
