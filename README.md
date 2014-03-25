@@ -1,4 +1,8 @@
-[![Gem Version](https://badge.fury.io/rb/guard-rubocop.png)](http://badge.fury.io/rb/guard-rubocop) [![Dependency Status](https://gemnasium.com/yujinakayama/guard-rubocop.png)](https://gemnasium.com/yujinakayama/guard-rubocop) [![Build Status](https://travis-ci.org/yujinakayama/guard-rubocop.png?branch=master)](https://travis-ci.org/yujinakayama/guard-rubocop) [![Coverage Status](https://coveralls.io/repos/yujinakayama/guard-rubocop/badge.png?branch=master)](https://coveralls.io/r/yujinakayama/guard-rubocop) [![Code Climate](https://codeclimate.com/github/yujinakayama/guard-rubocop.png)](https://codeclimate.com/github/yujinakayama/guard-rubocop)
+[![Gem Version](http://img.shields.io/gem/v/guard-rubocop.svg)](http://badge.fury.io/rb/guard-rubocop)
+[![Dependency Status](http://img.shields.io/gemnasium/yujinakayama/guard-rubocop.svg)](https://gemnasium.com/yujinakayama/guard-rubocop)
+[![Build Status](http://img.shields.io/travis/yujinakayama/guard-rubocop/master.svg)](https://travis-ci.org/yujinakayama/guard-rubocop)
+[![Coverage Status](http://img.shields.io/coveralls/yujinakayama/guard-rubocop/master.svg)](https://coveralls.io/r/yujinakayama/guard-rubocop)
+[![Code Climate](http://img.shields.io/codeclimate/github/yujinakayama/guard-rubocop.svg)](https://codeclimate.com/github/yujinakayama/guard-rubocop)
 
 # Guard::Rubocop
 
