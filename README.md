@@ -4,9 +4,9 @@
 [![Coverage Status](http://img.shields.io/coveralls/yujinakayama/guard-rubocop/master.svg)](https://coveralls.io/r/yujinakayama/guard-rubocop)
 [![Code Climate](http://img.shields.io/codeclimate/github/yujinakayama/guard-rubocop.svg)](https://codeclimate.com/github/yujinakayama/guard-rubocop)
 
-# Guard::Rubocop
+# guard-rubocop
 
-Guard::Rubocop allows you to automatically check Ruby code style with [RuboCop](https://github.com/bbatsov/rubocop) when files are modified.
+**guard-rubocop** allows you to automatically check Ruby code style with [RuboCop](https://github.com/bbatsov/rubocop) when files are modified.
 
 Tested on MRI 1.9, 2.0, 2.1, JRuby in 1.9 mode and Rubinius.
 
