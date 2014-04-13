@@ -319,14 +319,14 @@ describe Guard::Rubocop::Runner do
     end
 
     it 'notifies summary' do
-      expect(Guard::Notifier).to receive(:notify) do |message, options|
+      expect(Guard::Notifier).to receive(:notify) do |message, _options|
         expect(message).to eq('2 files inspected, 4 offenses detected')
       end
       runner.notify(true)
     end
 
     it 'notifies with title "RuboCop results"' do
-      expect(Guard::Notifier).to receive(:notify) do |message, options|
+      expect(Guard::Notifier).to receive(:notify) do |_message, options|
         expect(options[:title]).to eq('RuboCop results')
       end
       runner.notify(true)
@@ -334,7 +334,7 @@ describe Guard::Rubocop::Runner do
 
     context 'when passed' do
       it 'shows success image' do
-        expect(Guard::Notifier).to receive(:notify) do |message, options|
+        expect(Guard::Notifier).to receive(:notify) do |_message, options|
           expect(options[:image]).to eq(:success)
         end
         runner.notify(true)
@@ -343,7 +343,7 @@ describe Guard::Rubocop::Runner do
 
     context 'when failed' do
       it 'shows failed image' do
-        expect(Guard::Notifier).to receive(:notify) do |message, options|
+        expect(Guard::Notifier).to receive(:notify) do |_message, options|
           expect(options[:image]).to eq(:failed)
         end
         runner.notify(false)

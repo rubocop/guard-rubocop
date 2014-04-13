@@ -132,7 +132,7 @@ describe Guard::Rubocop, :silence_output do
       end
 
       it 'passes cleaned paths to rubocop' do
-        expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |instance, paths|
+        expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |_instance, paths|
           expect(paths).to eq([
             File.expand_path('lib/guard/rubocop.rb'),
             File.expand_path('spec/spec_helper.rb')
@@ -159,7 +159,7 @@ describe Guard::Rubocop, :silence_output do
 
         it 'also inspects paths which are failed last time' do
           guard.failed_paths << failed_path
-          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |instance, paths|
+          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |_instance, paths|
             expect(paths).to include failed_path
           end
           subject
@@ -171,7 +171,7 @@ describe Guard::Rubocop, :silence_output do
 
         it 'inspects just changed paths' do
           guard.failed_paths << failed_path
-          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |instance, paths|
+          expect_any_instance_of(Guard::Rubocop::Runner).to receive(:run) do |_instance, paths|
             expect(paths).to eq([
               File.expand_path('lib/guard/rubocop.rb'),
               File.expand_path('spec/spec_helper.rb')
