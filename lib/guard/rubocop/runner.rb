@@ -33,6 +33,7 @@ module Guard
         end
 
         command.concat(['--format', 'json', '--out', json_file_path])
+        command << '--force-exclusion'
         command.concat(args_specified_by_user)
         command.concat(paths)
       end

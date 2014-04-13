@@ -112,21 +112,25 @@ describe Guard::Rubocop::Runner do
       end
     end
 
-    it 'adds args for JSON formatter ' do
+    it 'adds args for JSON formatter' do
       expect(build_command[3..4]).to eq(%w(--format json))
     end
 
-    it 'adds args for output file path of JSON formatter ' do
+    it 'adds args for output file path of JSON formatter' do
       expect(build_command[5]).to eq('--out')
       expect(build_command[6]).not_to be_empty
     end
 
+    it 'adds --force-exclusion option' do
+      expect(build_command[7]).to eq('--force-exclusion')
+    end
+
     it 'adds args specified by user' do
-      expect(build_command[7..8]).to eq(%w(--debug --rails))
+      expect(build_command[8..9]).to eq(%w(--debug --rails))
     end
 
     it 'adds the passed paths' do
-      expect(build_command[9..-1]).to eq(%w(file1.rb file2.rb))
+      expect(build_command[10..-1]).to eq(%w(file1.rb file2.rb))
     end
   end
 
