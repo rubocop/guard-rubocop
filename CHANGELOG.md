@@ -2,6 +2,8 @@
 
 ## Development
 
+## v1.1.0
+
 * Use RuboCop's `--force-exclusion` option to always ignore files specified in the `Exclude` configuration in `.rubocop.yml`
 
 ## v1.0.2
