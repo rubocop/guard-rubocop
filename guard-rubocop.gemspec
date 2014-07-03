@@ -11,13 +11,14 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Yuji Nakayama']
   spec.email         = ['nkymyj@gmail.com']
   spec.summary       = 'Guard plugin for RuboCop'
-  spec.description   = 'Guard::Rubocop automatically checks Ruby code style with RuboCop when files are modified.'
+  spec.description   = 'Guard::Rubocop automatically checks Ruby code style with RuboCop ' \
+                       'when files are modified.'
   spec.homepage      = 'https://github.com/yujinakayama/guard-rubocop'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files`.split($/)
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  spec.executables   = spec.files.grep(/^bin\//) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(/^spec\//)
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'guard',   '~> 2.0'
