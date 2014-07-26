@@ -26,7 +26,7 @@ module Guard
       end
 
       def build_command(paths)
-        command = ['rubocop']
+        command = Array(@options[:cmd]).dup
 
         unless include_formatter_for_console?(args_specified_by_user)
           command.concat(%w(--format progress)) # Keep default formatter for console.
