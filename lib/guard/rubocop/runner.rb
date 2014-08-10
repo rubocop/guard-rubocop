@@ -3,7 +3,7 @@
 require 'json'
 
 module Guard
-  class Rubocop
+  class RuboCop
     # This class runs `rubocop` command, retrieves result and notifies.
     # An instance of this class is intended to invoke `rubocop` only once in its lifetime.
     class Runner

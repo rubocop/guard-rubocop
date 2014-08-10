@@ -1,9 +1,9 @@
 # coding: utf-8
 
 module Guard
-  # A workaround for declaring `class Rubocop`
-  # before `class Rubocop < Guard` in rubocop.rb
-  module RubocopVersion
+  # A workaround for declaring `class RuboCop`
+  # before `class RuboCop < Guard` in rubocop.rb
+  module RuboCopVersion
     # http://semver.org/
     MAJOR = 1
     MINOR = 1

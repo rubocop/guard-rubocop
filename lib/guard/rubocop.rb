@@ -4,9 +4,9 @@ require 'guard'
 require 'guard/plugin'
 
 module Guard
-  # This class gets API calls from `guard` and runs `rubocop` command via {Guard::Rubocop::Runner}.
+  # This class gets API calls from `guard` and runs `rubocop` command via {Guard::RuboCop::Runner}.
   # An instance of this class stays alive in a `guard` command session.
-  class Rubocop < Plugin
+  class RuboCop < Plugin
     autoload :Runner, 'guard/rubocop/runner'
 
     attr_reader :options, :failed_paths

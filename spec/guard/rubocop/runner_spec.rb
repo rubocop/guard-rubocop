@@ -2,8 +2,8 @@
 
 require 'spec_helper.rb'
 
-describe Guard::Rubocop::Runner do
-  subject(:runner) { Guard::Rubocop::Runner.new(options) }
+describe Guard::RuboCop::Runner do
+  subject(:runner) { Guard::RuboCop::Runner.new(options) }
   let(:options) { {} }
 
   describe '#run' do
