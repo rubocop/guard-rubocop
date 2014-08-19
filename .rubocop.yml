@@ -5,3 +5,9 @@ LineLength:
 # The default 10 lines limit is unrealistic.
 MethodLength:
   Max: 15
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Encoding:
+  Enabled: false
