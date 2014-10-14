@@ -18,7 +18,8 @@ module Guard
         all_on_start: true,
         keep_failed:  true,
         notification: :failed,
-        cli: nil
+        cli: nil,
+        hide_stdout: false
       }.merge(options)
 
       @failed_paths = []

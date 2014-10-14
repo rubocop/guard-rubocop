@@ -62,6 +62,8 @@ all_on_start: true     # Check all files at Guard startup.
 cli: '--rails'         # Pass arbitrary RuboCop CLI arguments.
                        # An array or string is acceptable.
                        #   default: nil
+hide_stdout: true      # Do not display console output (in case outputting to file)
+                       #   default: false
 keep_failed: true      # Keep failed files until they pass.
                        #   default: true
 notification: :failed  # Display Growl notification after each run.
