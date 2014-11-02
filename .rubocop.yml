@@ -5,3 +5,7 @@ LineLength:
 # The default 10 lines limit is unrealistic.
 MethodLength:
   Max: 15
+
+RegexpLiteral:
+  Exclude:
+    - '**/Guardfile'
