@@ -171,6 +171,15 @@ describe Guard::RuboCop::Runner do
   describe '#include_formatter_for_console?' do
     subject(:include_formatter_for_console?) { runner.include_formatter_for_console?(args) }
 
+    context 'when the :hide_stdout option is set' do
+      let(:args) { %w() }
+      let(:options) { { hide_stdout: true } }
+
+      it 'includes formatter for console' do
+        expect(include_formatter_for_console?).to be_truthy
+      end
+    end
+
     context 'when the passed args include a -f/--format' do
       context 'but does not include an -o/--output' do
         let(:args) { %w(--format simple --debug) }
