@@ -2,6 +2,10 @@
 
 ## Development
 
+## v1.2.0
+
+* Add `:hide_stdout` option ([#15](https://github.com/yujinakayama/guard-rubocop/pull/15))
+
 ## v1.1.0
 
 * Use RuboCop's `--force-exclusion` option to always ignore files specified in the `Exclude` configuration in `.rubocop.yml`
