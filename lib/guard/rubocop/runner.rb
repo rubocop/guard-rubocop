@@ -13,7 +13,6 @@ module Guard
 
       def run(paths = [])
         command = build_command(paths)
-
         passed = system(*command)
 
         case @options[:notification]
@@ -29,7 +28,7 @@ module Guard
       def build_command(paths)
         command = ['rubocop']
 
-        unless include_formatter_for_console?(args_specified_by_user)
+        if should_add_default_formatter_for_console?
           command.concat(%w(--format progress)) # Keep default formatter for console.
         end
 
@@ -37,6 +36,10 @@ module Guard
         command << '--force-exclusion'
         command.concat(args_specified_by_user)
         command.concat(paths)
+      end
+
+      def should_add_default_formatter_for_console?
+        !@options[:hide_stdout] && !include_formatter_for_console?(args_specified_by_user)
       end
 
       def args_specified_by_user
@@ -52,8 +55,6 @@ module Guard
       end
 
       def include_formatter_for_console?(cli_args)
-        return true if @options[:hide_stdout]
-
         index = -1
         formatter_args = cli_args.group_by do |arg|
           index += 1 if arg == '--format' || arg.start_with?('-f')

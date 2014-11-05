@@ -96,19 +96,41 @@ describe Guard::RuboCop::Runner do
     let(:options) { { cli: %w(--debug --rails) } }
     let(:paths) { %w(file1.rb file2.rb) }
 
-    context 'when :cli option includes formatter for console' do
-      let(:options) { { cli: %w(--format simple) } }
+    context 'when :hide_stdout is not set' do
+      context 'and :cli option includes formatter for console' do
+        before { options[:cli] = %w(--format simple) }
 
-      it 'does not add args for the default formatter for console' do
-        expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
+        it 'does not add args for the default formatter for console' do
+          expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
+        end
+      end
+
+      context 'and :cli option does not include formatter for console' do
+        before { options[:cli] = %w(--format simple --out simple.txt) }
+
+        it 'adds args for the default formatter for console' do
+          expect(build_command[0..2]).to eq(%w(rubocop --format progress))
+        end
       end
     end
 
-    context 'when :cli option does not include formatter for console' do
-      let(:options) { { cli: %w(--format simple --out simple.txt) } }
+    context 'when :hide_stdout is set' do
+      before { options[:hide_stdout] = true }
 
-      it 'adds args for the default formatter for console' do
-        expect(build_command[0..2]).to eq(%w(rubocop --format progress))
+      context 'and :cli option includes formatter for console' do
+        before { options[:cli] = %w(--format simple) }
+
+        it 'does not add args for the default formatter for console' do
+          expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
+        end
+      end
+
+      context 'and :cli option does not include formatter for console' do
+        before { options[:cli] = %w(--format simple --out simple.txt) }
+
+        it 'does not add args for the default formatter for console' do
+          expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
+        end
       end
     end
 
@@ -170,15 +192,6 @@ describe Guard::RuboCop::Runner do
 
   describe '#include_formatter_for_console?' do
     subject(:include_formatter_for_console?) { runner.include_formatter_for_console?(args) }
-
-    context 'when the :hide_stdout option is set' do
-      let(:args) { %w() }
-      let(:options) { { hide_stdout: true } }
-
-      it 'includes formatter for console' do
-        expect(include_formatter_for_console?).to be_truthy
-      end
-    end
 
     context 'when the passed args include a -f/--format' do
       context 'but does not include an -o/--output' do
