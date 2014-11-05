@@ -13,6 +13,7 @@ module Guard
 
       def run(paths = [])
         command = build_command(paths)
+
         passed = system(*command)
 
         case @options[:notification]
@@ -51,6 +52,8 @@ module Guard
       end
 
       def include_formatter_for_console?(cli_args)
+        return true if @options[:hide_stdout]
+
         index = -1
         formatter_args = cli_args.group_by do |arg|
           index += 1 if arg == '--format' || arg.start_with?('-f')
