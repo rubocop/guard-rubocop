@@ -1,8 +1,6 @@
 # coding: utf-8
 
-require 'spec_helper.rb'
-
-describe Guard::RuboCop, :silence_output do
+RSpec.describe Guard::RuboCop, :silence_output do
   subject(:guard) { Guard::RuboCop.new(options) }
   let(:options) { {} }
 

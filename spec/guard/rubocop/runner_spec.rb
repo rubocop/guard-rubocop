@@ -1,8 +1,10 @@
 # coding: utf-8
 
-require 'spec_helper.rb'
+require 'guard/compat/test/helper'
 
-describe Guard::RuboCop::Runner do
+require 'guard/rubocop'
+
+RSpec.describe Guard::RuboCop::Runner do
   subject(:runner) { Guard::RuboCop::Runner.new(options) }
   let(:options) { {} }
 
