@@ -1,7 +1,8 @@
 # coding: utf-8
 
-require 'guard'
-require 'guard/plugin'
+require 'tempfile'
+
+require 'guard/compat/plugin'
 
 module Guard
   # This class gets API calls from `guard` and runs `rubocop` command via {Guard::RuboCop::Runner}.
@@ -30,7 +31,7 @@ module Guard
     end
 
     def run_all
-      UI.info 'Inspecting Ruby code style of all files'
+      Compat::UI.info 'Inspecting Ruby code style of all files'
       inspect_with_rubocop
     end
 
@@ -55,7 +56,7 @@ module Guard
       return if paths.empty?
 
       displayed_paths = paths.map { |path| smart_path(path) }
-      UI.info "Inspecting Ruby code style: #{displayed_paths.join(' ')}"
+      Compat::UI.info "Inspecting Ruby code style: #{displayed_paths.join(' ')}"
 
       inspect_with_rubocop(paths)
     end
@@ -65,8 +66,8 @@ module Guard
       passed = runner.run(paths)
       @failed_paths = runner.failed_paths
       throw :task_has_failed unless passed
-    rescue => error
-      UI.error 'The following exception occurred while running guard-rubocop: ' \
+    rescue StandardError => error
+      Compat::UI.error 'The following exception occurred while running guard-rubocop: ' \
                "#{error.backtrace.first} #{error.message} (#{error.class.name})"
     end
 
