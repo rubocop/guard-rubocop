@@ -1,8 +1,12 @@
 # coding: utf-8
 
-require 'spec_helper.rb'
+require 'guard/compat/test/helper'
 
-describe Guard::RuboCop::Runner do
+require 'launchy'
+
+require 'guard/rubocop'
+
+RSpec.describe Guard::RuboCop::Runner do
   subject(:runner) { Guard::RuboCop::Runner.new(options) }
   let(:options) { {} }
 
@@ -88,6 +92,19 @@ describe Guard::RuboCop::Runner do
     context 'when :notification option is false' do
       let(:options) { { notification: false } }
       include_examples 'notification', { passed: false, failed: false }
+    end
+
+    context 'when :launchy option is present' do
+      let(:options) { { launchy: 'launchy_path' } }
+
+      before do
+        allow(Pathname).to receive(:new).with('launchy_path') { double(exist?: true) }
+      end
+
+      it 'opens Launchy' do
+        expect(Launchy).to receive(:open).with('launchy_path')
+        runner.run(paths)
+      end
     end
   end
 
@@ -345,14 +362,14 @@ describe Guard::RuboCop::Runner do
     end
 
     it 'notifies summary' do
-      expect(Guard::Notifier).to receive(:notify) do |message, _options|
+      expect(Guard::Compat::UI).to receive(:notify) do |message, _options|
         expect(message).to eq('2 files inspected, 4 offenses detected')
       end
       runner.notify(true)
     end
 
     it 'notifies with title "RuboCop results"' do
-      expect(Guard::Notifier).to receive(:notify) do |_message, options|
+      expect(Guard::Compat::UI).to receive(:notify) do |_message, options|
         expect(options[:title]).to eq('RuboCop results')
       end
       runner.notify(true)
@@ -360,7 +377,7 @@ describe Guard::RuboCop::Runner do
 
     context 'when passed' do
       it 'shows success image' do
-        expect(Guard::Notifier).to receive(:notify) do |_message, options|
+        expect(Guard::Compat::UI).to receive(:notify) do |_message, options|
           expect(options[:image]).to eq(:success)
         end
         runner.notify(true)
@@ -369,7 +386,7 @@ describe Guard::RuboCop::Runner do
 
     context 'when failed' do
       it 'shows failed image' do
-        expect(Guard::Notifier).to receive(:notify) do |_message, options|
+        expect(Guard::Compat::UI).to receive(:notify) do |_message, options|
           expect(options[:image]).to eq(:failed)
         end
         runner.notify(false)
