@@ -62,7 +62,7 @@ all_on_start: true     # Check all files at Guard startup.
 cli: '--rails'         # Pass arbitrary RuboCop CLI arguments.
                        # An array or string is acceptable.
                        #   default: nil
-hide_stdout: false      # Do not display console output (in case outputting to file).
+hide_stdout: false     # Do not display console output (in case outputting to file).
                        #   default: false
 keep_failed: true      # Keep failed files until they pass.
                        #   default: true
@@ -71,6 +71,19 @@ notification: :failed  # Display Growl notification after each run.
                        #   false   - Never notify
                        #   :failed - Notify only when failed
                        #   default: :failed
+launchy: nil           # Filename to launch using Launchy after RuboCop runs.
+                       #   default: nil
+```
+
+### Using Launchy to view results
+
+guard-rubocop can be configured to launch a results file in lieu of or in addition to outputing results to the terminal.
+Configure your Guardfile with the launchy option:
+
+``` ruby
+guard :rubocop, cli: %w(--format fuubar --format html -o ./tmp/rubocop_results.html), launchy: './tmp/rubocop_results.html' do
+  # ...
+end
 ```
 
 ## Advanced Tips
