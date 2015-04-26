@@ -88,7 +88,7 @@ module Guard
 
       def notify(passed)
         image = passed ? :success : :failed
-        Notifier.notify(summary_text, title: 'RuboCop results', image: image)
+        Compat::UI.notify(summary_text, title: 'RuboCop results', image: image)
       end
 
       def summary_text
