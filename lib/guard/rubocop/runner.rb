@@ -22,6 +22,8 @@ module Guard
           notify(passed)
         end
 
+        open_launchy
+
         passed
       end
 
@@ -125,6 +127,13 @@ module Guard
         text << 's' unless number == 1
 
         text
+      end
+
+      def open_launchy
+        return unless @options[:launchy]
+        require "launchy"
+        pn = Pathname.new(@options[:launchy])
+        ::Launchy.open(@options[:launchy]) if pn.exist?
       end
     end
   end

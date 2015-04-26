@@ -2,6 +2,8 @@
 
 require 'guard/compat/test/helper'
 
+require "launchy"
+
 require 'guard/rubocop'
 
 RSpec.describe Guard::RuboCop::Runner do
@@ -90,6 +92,20 @@ RSpec.describe Guard::RuboCop::Runner do
     context 'when :notification option is false' do
       let(:options) { { notification: false } }
       include_examples 'notification', { passed: false, failed: false }
+    end
+
+    context "when :launchy option is present" do
+      let(:options) { { launchy: "launchy_path" } }
+
+      before do
+        allow(Pathname).to receive(:new).
+          with("launchy_path") { double(exist?: true) }
+      end
+
+      it "opens Launchy" do
+        expect(Launchy).to receive(:open).with("launchy_path")
+        runner.run(paths)
+      end
     end
   end
 
