@@ -30,4 +30,9 @@ SimpleCov.start do
   add_filter '/vendor/bundle/'
 end
 
+# Initialize Guard for running tests.
+require 'guard'
+Guard.setup(notify: false)
+
 require 'guard/rubocop'
+
