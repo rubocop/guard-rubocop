@@ -8,4 +8,5 @@ MethodLength:
 
 RegexpLiteral:
   Exclude:
+    - '**/*.gemspec'
     - '**/Guardfile'
