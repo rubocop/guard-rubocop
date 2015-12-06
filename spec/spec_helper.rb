@@ -35,4 +35,3 @@ require 'guard'
 Guard.setup(notify: false)
 
 require 'guard/rubocop'
-
