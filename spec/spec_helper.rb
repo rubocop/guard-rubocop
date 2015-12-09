@@ -17,12 +17,9 @@ end
 require 'simplecov'
 SimpleCov.coverage_dir(File.join('spec', 'coverage'))
 
-if ENV['TRAVIS']
+if ENV['CI']
   require 'coveralls'
   SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-elsif ENV['CI']
-  require 'simplecov-rcov'
-  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 end
 
 SimpleCov.start do
