@@ -49,7 +49,7 @@ module Guard
           when Array    then args
           when String   then args.shellsplit
           when NilClass then []
-          else fail ':cli option must be either an array or string'
+          else fail ArgumentError, ':cli option must be either an array or string'
           end
         end
       end

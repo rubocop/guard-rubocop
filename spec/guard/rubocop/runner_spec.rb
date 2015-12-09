@@ -185,7 +185,7 @@ describe Guard::RuboCop::Runner do
       let(:options) { { cli: { key: 'value' } } }
 
       it 'raises error' do
-        expect { runner.args_specified_by_user }.to raise_error
+        expect { runner.args_specified_by_user }.to raise_error(ArgumentError)
       end
     end
   end
