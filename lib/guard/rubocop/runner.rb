@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'json'
+require 'rubocop'
 
 module Guard
   class RuboCop
@@ -30,6 +31,10 @@ module Guard
 
         if should_add_default_formatter_for_console?
           command.concat(%w(--format progress)) # Keep default formatter for console.
+        end
+
+        if @options[:fail_level]
+          command.concat(['--fail-level', @options[:fail_level]])
         end
 
         command.concat(['--format', 'json', '--out', json_file_path])
@@ -105,6 +110,7 @@ module Guard
       def failed_paths
         failed_files = result[:files].reject do |file|
           offenses = file[:offenses] || file[:offences]
+          offenses = offenses.select {|offense| considered_failure?(offense) }
           offenses.empty?
         end
         failed_files.map do |file|
@@ -125,6 +131,18 @@ module Guard
         text << 's' unless number == 1
 
         text
+      end
+
+      def considered_failure?(offense)
+        return true unless @options[:fail_level]
+        ::RuboCop::Cop::Severity.new(offense[:severity]) >= minimum_severity_to_fail
+      end
+
+      def minimum_severity_to_fail
+        @minimum_severity_to_fail ||= begin
+          name = @options[:fail_level] || :refactor
+          ::RuboCop::Cop::Severity.new(name)
+        end
       end
     end
   end

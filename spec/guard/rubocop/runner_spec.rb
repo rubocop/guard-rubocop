@@ -134,6 +134,14 @@ describe Guard::RuboCop::Runner do
       end
     end
 
+    context 'when :fail_level is set' do
+      before { options[:fail_level] = 'W' }
+
+      it 'adds --fail-level' do
+        expect(build_command[3..4]).to eq(%w(--fail-level W))
+      end
+    end
+
     it 'adds args for JSON formatter' do
       expect(build_command[3..4]).to eq(%w(--format json))
     end
@@ -498,6 +506,23 @@ describe Guard::RuboCop::Runner do
 
       it 'handles the spelling' do
         expect(runner.failed_paths).to eq(['lib/bar.rb'])
+      end
+    end
+
+
+    context 'when :fail_level is set to level matching offense' do
+      before { options[:fail_level] = 'C' }
+
+      it 'returns file paths which have offenses' do
+        expect(runner.failed_paths).to eq(['lib/bar.rb'])
+      end
+    end
+
+    context 'when :fail_level is set to higher level than offense' do
+      before { options[:fail_level] = 'E' }
+
+      it 'returns no file paths' do
+        expect(runner.failed_paths).to eq([])
       end
     end
   end
