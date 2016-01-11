@@ -19,7 +19,8 @@ module Guard
         keep_failed:  true,
         notification: :failed,
         cli: nil,
-        hide_stdout: false
+        hide_stdout: false,
+        fail_level: nil
       }.merge(options)
 
       @failed_paths = []
