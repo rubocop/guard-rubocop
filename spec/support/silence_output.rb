@@ -1,4 +1,4 @@
-shared_context 'silence output', silence_output: true do
+RSpec.shared_context 'silence output', :silence_output do
   null_object = BasicObject.new
 
   class << null_object
