@@ -1,5 +1,3 @@
-# coding: utf-8
-
 require 'json'
 
 module Guard
@@ -29,7 +27,7 @@ module Guard
         command = ['rubocop']
 
         if should_add_default_formatter_for_console?
-          command.concat(%w(--format progress)) # Keep default formatter for console.
+          command.concat(%w[--format progress]) # Keep default formatter for console.
         end
 
         command.concat(['--format', 'json', '--out', json_file_path])
@@ -49,7 +47,7 @@ module Guard
           when Array    then args
           when String   then args.shellsplit
           when NilClass then []
-          else fail ArgumentError, ':cli option must be either an array or string'
+          else raise ArgumentError, ':cli option must be either an array or string'
           end
         end
       end
@@ -115,7 +113,7 @@ module Guard
       def pluralize(number, thing, options = {})
         text = ''
 
-        if number == 0 && options[:no_for_zero]
+        if number.zero? && options[:no_for_zero]
           text = 'no'
         else
           text << number.to_s

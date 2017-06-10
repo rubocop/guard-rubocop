@@ -1,12 +1,28 @@
-# The default 79 character limit is sometimes unproductive.
-LineLength:
+Layout/IndentArray:
+  EnforcedStyle: consistent
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/LineLength:
   Max: 100
 
-# The default 10 lines limit is unrealistic.
-MethodLength:
+Metrics/MethodLength:
   Max: 15
 
-RegexpLiteral:
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/Encoding:
+  Enabled: true
+  EnforcedStyle: never
+
+Style/MethodMissing:
+  Exclude:
+    - spec/support/silence_output.rb
+
+Style/RegexpLiteral:
   Exclude:
     - '**/*.gemspec'
     - '**/Guardfile'

@@ -7,8 +7,8 @@ group :test do
 end
 
 platforms :rbx do
-  gem 'rubysl'
-  gem 'rubinius-developer_tools'
   gem 'json'
   gem 'racc' # Needed for RuboCop
+  gem 'rubinius-developer_tools'
+  gem 'rubysl'
 end

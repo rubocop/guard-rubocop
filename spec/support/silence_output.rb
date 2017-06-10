@@ -1,5 +1,3 @@
-# coding: utf-8
-
 shared_context 'silence output', silence_output: true do
   null_object = BasicObject.new
 

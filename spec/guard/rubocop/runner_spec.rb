@@ -1,5 +1,3 @@
-# coding: utf-8
-
 require 'spec_helper.rb'
 
 describe Guard::RuboCop::Runner do
@@ -77,39 +75,39 @@ describe Guard::RuboCop::Runner do
 
     context 'when :notification option is true' do
       let(:options) { { notification: true } }
-      include_examples 'notification', { passed: true, failed: true }
+      include_examples 'notification', passed: true, failed: true
     end
 
     context 'when :notification option is :failed' do
       let(:options) { { notification: :failed } }
-      include_examples 'notification', { passed: false, failed: true }
+      include_examples 'notification', passed: false, failed: true
     end
 
     context 'when :notification option is false' do
       let(:options) { { notification: false } }
-      include_examples 'notification', { passed: false, failed: false }
+      include_examples 'notification', passed: false, failed: false
     end
   end
 
   describe '#build_command' do
     subject(:build_command) { runner.build_command(paths) }
-    let(:options) { { cli: %w(--debug --rails) } }
-    let(:paths) { %w(file1.rb file2.rb) }
+    let(:options) { { cli: %w[--debug --rails] } }
+    let(:paths) { %w[file1.rb file2.rb] }
 
     context 'when :hide_stdout is not set' do
       context 'and :cli option includes formatter for console' do
-        before { options[:cli] = %w(--format simple) }
+        before { options[:cli] = %w[--format simple] }
 
         it 'does not add args for the default formatter for console' do
-          expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
+          expect(build_command[0..2]).not_to eq(%w[rubocop --format progress])
         end
       end
 
       context 'and :cli option does not include formatter for console' do
-        before { options[:cli] = %w(--format simple --out simple.txt) }
+        before { options[:cli] = %w[--format simple --out simple.txt] }
 
         it 'adds args for the default formatter for console' do
-          expect(build_command[0..2]).to eq(%w(rubocop --format progress))
+          expect(build_command[0..2]).to eq(%w[rubocop --format progress])
         end
       end
     end
@@ -118,24 +116,24 @@ describe Guard::RuboCop::Runner do
       before { options[:hide_stdout] = true }
 
       context 'and :cli option includes formatter for console' do
-        before { options[:cli] = %w(--format simple) }
+        before { options[:cli] = %w[--format simple] }
 
         it 'does not add args for the default formatter for console' do
-          expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
+          expect(build_command[0..2]).not_to eq(%w[rubocop --format progress])
         end
       end
 
       context 'and :cli option does not include formatter for console' do
-        before { options[:cli] = %w(--format simple --out simple.txt) }
+        before { options[:cli] = %w[--format simple --out simple.txt] }
 
         it 'does not add args for the default formatter for console' do
-          expect(build_command[0..2]).not_to eq(%w(rubocop --format progress))
+          expect(build_command[0..2]).not_to eq(%w[rubocop --format progress])
         end
       end
     end
 
     it 'adds args for JSON formatter' do
-      expect(build_command[3..4]).to eq(%w(--format json))
+      expect(build_command[3..4]).to eq(%w[--format json])
     end
 
     it 'adds args for output file path of JSON formatter' do
@@ -148,11 +146,11 @@ describe Guard::RuboCop::Runner do
     end
 
     it 'adds args specified by user' do
-      expect(build_command[8..9]).to eq(%w(--debug --rails))
+      expect(build_command[8..9]).to eq(%w[--debug --rails])
     end
 
     it 'adds the passed paths' do
-      expect(build_command[10..-1]).to eq(%w(file1.rb file2.rb))
+      expect(build_command[10..-1]).to eq(%w[file1.rb file2.rb])
     end
   end
 
@@ -195,7 +193,7 @@ describe Guard::RuboCop::Runner do
 
     context 'when the passed args include a -f/--format' do
       context 'but does not include an -o/--output' do
-        let(:args) { %w(--format simple --debug) }
+        let(:args) { %w[--format simple --debug] }
 
         it 'returns true' do
           expect(include_formatter_for_console?).to be_truthy
@@ -203,7 +201,7 @@ describe Guard::RuboCop::Runner do
       end
 
       context 'and include an -o/--output just after the -f/--format' do
-        let(:args) { %w(--format simple --out simple.txt) }
+        let(:args) { %w[--format simple --out simple.txt] }
 
         it 'returns false' do
           expect(include_formatter_for_console?).to be_falsey
@@ -211,7 +209,7 @@ describe Guard::RuboCop::Runner do
       end
 
       context 'and include an -o/--output after the -f/--format across another arg' do
-        let(:args) { %w(--format simple --debug --out simple.txt) }
+        let(:args) { %w[--format simple --debug --out simple.txt] }
 
         it 'returns false' do
           expect(include_formatter_for_console?).to be_falsey
@@ -221,7 +219,7 @@ describe Guard::RuboCop::Runner do
 
     context 'when the passed args include a -f with its arg without separator' do
       context 'but does not include an -o/--output' do
-        let(:args) { %w(-fs --debug) }
+        let(:args) { %w[-fs --debug] }
 
         it 'returns true' do
           expect(include_formatter_for_console?).to be_truthy
@@ -229,7 +227,7 @@ describe Guard::RuboCop::Runner do
       end
 
       context 'and include an -o with its arg without separator just after the -f/--format' do
-        let(:args) { %w(-fs -osimple.txt) }
+        let(:args) { %w[-fs -osimple.txt] }
 
         it 'returns false' do
           expect(include_formatter_for_console?).to be_falsey
@@ -239,7 +237,7 @@ describe Guard::RuboCop::Runner do
 
     context 'when the passed args include multiple -f/--format' do
       context 'and all -f/--format have associated -o/--out' do
-        let(:args) { %w(--format simple --out simple.txt --format emacs --out emacs.txt) }
+        let(:args) { %w[--format simple --out simple.txt --format emacs --out emacs.txt] }
 
         it 'returns false' do
           expect(include_formatter_for_console?).to be_falsey
@@ -247,7 +245,7 @@ describe Guard::RuboCop::Runner do
       end
 
       context 'and any -f/--format has associated -o/--out' do
-        let(:args) { %w(--format simple --format emacs --out emacs.txt) }
+        let(:args) { %w[--format simple --format emacs --out emacs.txt] }
 
         it 'returns true' do
           expect(include_formatter_for_console?).to be_truthy
@@ -255,7 +253,7 @@ describe Guard::RuboCop::Runner do
       end
 
       context 'and no -f/--format has associated -o/--out' do
-        let(:args) { %w(--format simple --format emacs) }
+        let(:args) { %w[--format simple --format emacs] }
 
         it 'returns true' do
           expect(include_formatter_for_console?).to be_truthy
@@ -264,7 +262,7 @@ describe Guard::RuboCop::Runner do
     end
 
     context 'when the passed args do not include -f/--format' do
-      let(:args) { %w(--debug) }
+      let(:args) { %w[--debug] }
 
       it 'returns false' do
         expect(include_formatter_for_console?).to be_falsey
@@ -334,12 +332,10 @@ describe Guard::RuboCop::Runner do
   describe '#notify' do
     before do
       allow(runner).to receive(:result).and_return(
-        {
-          summary: {
-            offense_count: 4,
-            target_file_count: 3,
-            inspected_file_count: 2
-          }
+        summary: {
+          offense_count: 4,
+          target_file_count: 3,
+          inspected_file_count: 2
         }
       )
     end
@@ -380,12 +376,10 @@ describe Guard::RuboCop::Runner do
   describe '#summary_text' do
     before do
       allow(runner).to receive(:result).and_return(
-        {
-          summary: {
-            offense_count: offense_count,
-            target_file_count: target_file_count,
-            inspected_file_count: inspected_file_count
-          }
+        summary: {
+          offense_count: offense_count,
+          target_file_count: target_file_count,
+          inspected_file_count: inspected_file_count
         }
       )
     end
@@ -441,12 +435,10 @@ describe Guard::RuboCop::Runner do
     context 'with spelling "offence" in old RuboCop' do
       before do
         allow(runner).to receive(:result).and_return(
-          {
-            summary: {
-              offence_count: 2,
-              target_file_count: 1,
-              inspected_file_count: 1
-            }
+          summary: {
+            offence_count: 2,
+            target_file_count: 1,
+            inspected_file_count: 1
           }
         )
       end

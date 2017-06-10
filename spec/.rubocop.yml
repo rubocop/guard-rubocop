@@ -1,5 +1,0 @@
-inherit_from: ../.rubocop.yml
-
-# Sometimes I want to indicate that “This is a hash” explicitly with #and_return.
-BracesAroundHashParameters:
-  Enabled: false

@@ -1,5 +1,3 @@
-# coding: utf-8
-
 require 'spec_helper.rb'
 
 describe Guard::RuboCop, :silence_output do
@@ -111,7 +109,7 @@ describe Guard::RuboCop, :silence_output do
     end
   end
 
-  [:run_on_additions, :run_on_modifications].each do |method|
+  %i[run_on_additions run_on_modifications].each do |method|
     describe "##{method}", :processes_after_running do
       subject { super().send(method, changed_paths) }
       let(:changed_paths) do
