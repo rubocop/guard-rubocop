@@ -20,7 +20,7 @@ module Guard
           notify(passed)
         end
 
-        open_launchy
+        open_launchy_if_needed
 
         passed
       end
@@ -127,11 +127,11 @@ module Guard
         text
       end
 
-      def open_launchy
-        return unless @options[:launchy]
+      def open_launchy_if_needed
+        return unless (output_path = @options[:launchy])
+        return unless File.exist?(output_path)
         require 'launchy'
-        pn = Pathname.new(@options[:launchy])
-        ::Launchy.open(@options[:launchy]) if pn.exist?
+        ::Launchy.open(output_path)
       end
     end
   end

@@ -92,8 +92,7 @@ RSpec.describe Guard::RuboCop::Runner do
       let(:options) { { launchy: 'launchy_path' } }
 
       before do
-        allow(Pathname).to receive(:new)
-          .with('launchy_path') { double(exist?: true) }
+        allow(File).to receive(:exist?).with('launchy_path').and_return(true)
       end
 
       it 'opens Launchy' do
