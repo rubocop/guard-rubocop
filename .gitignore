@@ -11,6 +11,7 @@ doc/
 lib/bundler/man
 pkg
 rdoc
+spec/examples.txt
 spec/reports
 test/tmp
 test/version_tmp

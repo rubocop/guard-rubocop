@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module Guard
   # A workaround for declaring `class RuboCop`
   # before `class RuboCop < Guard` in rubocop.rb
