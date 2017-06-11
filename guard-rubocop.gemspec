@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Yuji Nakayama']
   spec.email         = ['nkymyj@gmail.com']
   spec.summary       = 'Guard plugin for RuboCop'
-  spec.description   = 'Guard::Rubocop automatically checks Ruby code style with RuboCop ' \
+  spec.description   = 'Guard::RuboCop automatically checks Ruby code style with RuboCop ' \
                        'when files are modified.'
   spec.homepage      = 'https://github.com/yujinakayama/guard-rubocop'
   spec.license       = 'MIT'

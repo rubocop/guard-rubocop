@@ -34,7 +34,7 @@ or install it yourself as:
 $ gem install guard-rubocop
 ```
 
-Add the default Guard::Rubocop definition to your `Guardfile` by running:
+Add the default Guard::RuboCop definition to your `Guardfile` by running:
 
 ```sh
 $ guard init rubocop
