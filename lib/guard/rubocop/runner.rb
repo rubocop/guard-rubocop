@@ -129,7 +129,7 @@ module Guard
 
       def open_launchy
         return unless @options[:launchy]
-        require "launchy"
+        require 'launchy'
         pn = Pathname.new(@options[:launchy])
         ::Launchy.open(@options[:launchy]) if pn.exist?
       end
