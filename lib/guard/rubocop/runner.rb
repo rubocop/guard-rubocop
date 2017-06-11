@@ -20,6 +20,8 @@ module Guard
           notify(passed)
         end
 
+        open_launchy_if_needed
+
         passed
       end
 
@@ -123,6 +125,13 @@ module Guard
         text << 's' unless number == 1
 
         text
+      end
+
+      def open_launchy_if_needed
+        return unless (output_path = @options[:launchy])
+        return unless File.exist?(output_path)
+        require 'launchy'
+        ::Launchy.open(output_path)
       end
     end
   end

@@ -2,6 +2,8 @@
 
 ## Development
 
+* Add `:launchy` option ([#21](https://github.com/yujinakayama/guard-rubocop/pull/21), [#35](https://github.com/yujinakayama/guard-rubocop/pull/35))
+
 ## v1.2.0
 
 * Add `:hide_stdout` option ([#15](https://github.com/yujinakayama/guard-rubocop/pull/15))

@@ -1,3 +1,5 @@
+require 'launchy'
+
 RSpec.describe Guard::RuboCop::Runner do
   subject(:runner) { Guard::RuboCop::Runner.new(options) }
   let(:options) { {} }
@@ -84,6 +86,19 @@ RSpec.describe Guard::RuboCop::Runner do
     context 'when :notification option is false' do
       let(:options) { { notification: false } }
       include_examples 'notification', passed: false, failed: false
+    end
+
+    context 'when :launchy option is present' do
+      let(:options) { { launchy: 'launchy_path' } }
+
+      before do
+        allow(File).to receive(:exist?).with('launchy_path').and_return(true)
+      end
+
+      it 'opens Launchy' do
+        expect(Launchy).to receive(:open).with('launchy_path')
+        runner.run(paths)
+      end
     end
   end
 
