@@ -2,6 +2,8 @@
 
 ## Development
 
+## v1.3.0
+
 * Add `:launchy` option ([#21](https://github.com/yujinakayama/guard-rubocop/pull/21), [#35](https://github.com/yujinakayama/guard-rubocop/pull/35))
 * Modify the `Guardfile` template so that RuboCop can be run when `.rubocop_todo.yml` is modified ([#36](https://github.com/yujinakayama/guard-rubocop/pull/36))
 
