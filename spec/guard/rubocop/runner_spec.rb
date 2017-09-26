@@ -159,11 +159,11 @@ RSpec.describe Guard::RuboCop::Runner do
     end
 
     it 'adds args specified by user' do
-      expect(build_command[8..9]).to eq(%w[--debug --rails])
+      expect(build_command[9..10]).to eq(%w[--debug --rails])
     end
 
     it 'adds the passed paths' do
-      expect(build_command[10..-1]).to eq(%w[file1.rb file2.rb])
+      expect(build_command[11..-1]).to eq(%w[file1.rb file2.rb])
     end
   end
 
