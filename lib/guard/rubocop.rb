@@ -63,7 +63,7 @@ module Guard
       passed = runner.run(paths)
       @failed_paths = runner.failed_paths
       throw :task_has_failed unless passed
-    rescue => error
+    rescue StandardError => error
       UI.error 'The following exception occurred while running guard-rubocop: ' \
                "#{error.backtrace.first} #{error.message} (#{error.class.name})"
     end

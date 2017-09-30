@@ -13,6 +13,9 @@ Metrics/LineLength:
 Metrics/MethodLength:
   Max: 15
 
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
