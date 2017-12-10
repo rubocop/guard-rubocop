@@ -94,7 +94,7 @@ you might be uncomfortable with the offense reports from RuboCop in the red-gree
 * In the red-green phase, you're not necessarily required to write clean code – you just focus writing code to pass the test. It means, in this phase, `guard-rspec` should be run but `guard-rubocop` should not.
 * In the refactor phase, you're required to make the code clean while keeping the test passing. In this phase, both `guard-rspec` and `guard-rubocop` should be run.
 
-In this case, you may think the following `Guardfile` structure useful:
+In this case, you may consider making use of the [group method](https://github.com/guard/guard/wiki/Guardfile-DSL---Configuring-Guard#group) in your `Guardfile`:
 
 ```ruby
 # This group allows to skip running RuboCop when RSpec failed.
