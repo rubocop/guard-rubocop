@@ -19,10 +19,6 @@ Naming/HeredocDelimiterNaming:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
-Style/Encoding:
-  Enabled: true
-  EnforcedStyle: never
-
 Style/MethodMissing:
   Exclude:
     - spec/support/silence_output.rb
