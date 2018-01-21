@@ -107,6 +107,22 @@ RSpec.describe Guard::RuboCop::Runner do
     let(:options) { { cli: %w[--debug --rails] } }
     let(:paths) { %w[file1.rb file2.rb] }
 
+    describe ':cmd option' do
+      context 'when set' do
+        let(:options) { { cmd: 'bin/rubocop' } }
+
+        it 'uses the supplied :cmd' do
+          expect(build_command[0]).to eq('bin/rubocop')
+        end
+      end
+
+      context 'when not set' do
+        it 'uses the default command' do
+          expect(build_command[0]).to eq('rubocop')
+        end
+      end
+    end
+
     context 'when :hide_stdout is not set' do
       context 'and :cli option includes formatter for console' do
         before { options[:cli] = %w[--format simple] }
