@@ -1,5 +1,4 @@
 [![Gem Version](https://badge.fury.io/rb/guard-rubocop.svg)](http://badge.fury.io/rb/guard-rubocop)
-[![Build Status](https://travis-ci.org/yujinakayama/guard-rubocop.svg?branch=master&style=flat)](https://travis-ci.org/yujinakayama/guard-rubocop)
 [![Coverage Status](https://coveralls.io/repos/yujinakayama/guard-rubocop/badge.svg?branch=master&service=github)](https://coveralls.io/github/yujinakayama/guard-rubocop?branch=master)
 [![Code Climate](https://codeclimate.com/github/yujinakayama/guard-rubocop/badges/gpa.svg)](https://codeclimate.com/github/yujinakayama/guard-rubocop)
 
