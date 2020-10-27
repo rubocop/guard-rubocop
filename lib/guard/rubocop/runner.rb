@@ -115,13 +115,12 @@ module Guard
       end
 
       def pluralize(number, thing, options = {})
-        text = ''
-
-        if number.zero? && options[:no_for_zero]
-          text = 'no'
-        else
-          text << number.to_s
-        end
+        text =
+          if number.zero? && options[:no_for_zero]
+            +'no'
+          else
+            number.to_s
+          end
 
         text << " #{thing}"
         text << 's' unless number == 1
