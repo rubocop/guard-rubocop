@@ -20,6 +20,9 @@ Metrics/MethodLength:
 Naming/HeredocDelimiterNaming:
   Enabled: false
 
+Naming/RescuedExceptionsVariableName:
+  PreferredName: error
+
 Style/EmptyMethod:
   EnforcedStyle: expanded
 

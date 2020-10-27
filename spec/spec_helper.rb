@@ -22,7 +22,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-Dir[File.join(File.dirname(__FILE__), 'support', '*')].each do |path|
+Dir[File.join(File.dirname(__FILE__), 'support', '*')].sort.each do |path|
   require path
 end
 
