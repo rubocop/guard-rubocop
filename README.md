@@ -120,6 +120,6 @@ Note: You need to use `guard-rspec` 4.2.3 or later due to a [bug](https://github
 
 ## License
 
-Copyright (c) 2013–2014 Yuji Nakayama
+Copyright (c) 2013–2020 Yuji Nakayama
 
 See the [LICENSE.txt](LICENSE.txt) for details.
