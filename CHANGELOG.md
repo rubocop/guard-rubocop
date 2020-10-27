@@ -2,6 +2,10 @@
 
 ## Development
 
+## v1.4.0
+
+* Support RuboCop 1.0
+
 ## v1.3.0
 
 * Add `:launchy` option ([#21](https://github.com/yujinakayama/guard-rubocop/pull/21), [#35](https://github.com/yujinakayama/guard-rubocop/pull/35))
