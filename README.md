@@ -7,7 +7,7 @@
 
 **guard-rubocop** allows you to automatically check Ruby code style with [RuboCop](https://github.com/bbatsov/rubocop) when files are modified.
 
-Tested on MRI 2.2, 2.3, 2.4 and JRuby 9000.
+Tested on MRI 2.4 - 2.7.
 
 ## Installation
 
