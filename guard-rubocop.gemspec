@@ -16,6 +16,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/yujinakayama/guard-rubocop'
   spec.license       = 'MIT'
 
+  spec.required_ruby_version = '>= 2.4'
+
   spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   spec.executables   = spec.files.grep(/^bin\//) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(/^spec\//)
