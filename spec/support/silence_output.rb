@@ -9,6 +9,10 @@ RSpec.shared_context 'silence output', :silence_output do
       true
     end
 
+    def respond_to_missing?(*)
+      true
+    end
+
     def method_missing(*)
     end
   end
