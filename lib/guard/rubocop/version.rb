@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A workaround for declaring `class RuboCop`
 # before `class RuboCop < Guard` in rubocop.rb
 module GuardRuboCopVersion

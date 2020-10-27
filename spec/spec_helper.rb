@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -20,7 +22,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-Dir[File.join(File.dirname(__FILE__), 'support', '*')].each do |path|
+Dir[File.join(File.dirname(__FILE__), 'support', '*')].sort.each do |path|
   require path
 end
 

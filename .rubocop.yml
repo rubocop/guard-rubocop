@@ -1,14 +1,18 @@
 inherit_from: .rubocop_todo.yml
 
-Layout/IndentArray:
+Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
+
+Layout/LineLength:
+  Max: 100
+
+Lint/MissingSuper:
+  Exclude:
+    - spec/support/silence_output.rb
 
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
-
-Metrics/LineLength:
-  Max: 100
 
 Metrics/MethodLength:
   Max: 15
@@ -16,12 +20,15 @@ Metrics/MethodLength:
 Naming/HeredocDelimiterNaming:
   Enabled: false
 
+Naming/RescuedExceptionsVariableName:
+  PreferredName: error
+
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
-Style/MethodMissing:
+Style/FrozenStringLiteralComment:
   Exclude:
-    - spec/support/silence_output.rb
+    - lib/guard/rubocop/templates/Guardfile
 
 Style/RegexpLiteral:
   Exclude:

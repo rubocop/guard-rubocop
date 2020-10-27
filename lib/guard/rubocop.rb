@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'guard'
 require 'guard/plugin'
 
@@ -14,7 +16,7 @@ module Guard
 
       @options = {
         all_on_start: true,
-        keep_failed:  true,
+        keep_failed: true,
         notification: :failed,
         cli: nil,
         hide_stdout: false
@@ -74,6 +76,7 @@ module Guard
       paths.uniq!
       paths.reject! do |path|
         next true unless File.exist?(path)
+
         included_in_other_path?(path, paths)
       end
       paths

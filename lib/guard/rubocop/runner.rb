@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 module Guard
@@ -113,13 +115,12 @@ module Guard
       end
 
       def pluralize(number, thing, options = {})
-        text = ''
-
-        if number.zero? && options[:no_for_zero]
-          text = 'no'
-        else
-          text << number.to_s
-        end
+        text =
+          if number.zero? && options[:no_for_zero]
+            +'no'
+          else
+            number.to_s
+          end
 
         text << " #{thing}"
         text << 's' unless number == 1
@@ -130,6 +131,7 @@ module Guard
       def open_launchy_if_needed
         return unless (output_path = @options[:launchy])
         return unless File.exist?(output_path)
+
         require 'launchy'
         ::Launchy.open(output_path)
       end

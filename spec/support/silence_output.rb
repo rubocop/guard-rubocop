@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 RSpec.shared_context 'silence output', :silence_output do
   null_object = BasicObject.new
 
   class << null_object
     # #respond_to_missing? does not work.
     def respond_to?(*)
+      true
+    end
+
+    def respond_to_missing?(*)
       true
     end
 
