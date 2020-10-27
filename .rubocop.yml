@@ -23,6 +23,10 @@ Naming/HeredocDelimiterNaming:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - lib/guard/rubocop/templates/Guardfile
+
 Style/RegexpLiteral:
   Exclude:
     - '**/*.gemspec'

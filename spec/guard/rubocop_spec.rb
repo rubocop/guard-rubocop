@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Guard::RuboCop, :silence_output do
   subject(:guard) { Guard::RuboCop.new(options) }
   let(:options) { {} }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'launchy'
 
 RSpec.describe Guard::RuboCop::Runner do
