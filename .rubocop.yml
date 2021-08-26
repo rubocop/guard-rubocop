@@ -1,5 +1,8 @@
 inherit_from: .rubocop_todo.yml
 
+AllCops:
+  TargetRubyVersion: 2.5
+
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
 

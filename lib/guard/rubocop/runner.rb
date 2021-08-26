@@ -80,11 +80,9 @@ module Guard
       end
 
       def result
-        @result ||= begin
-          File.open(json_file_path) do |file|
-            # Rubinius 2.0.0.rc1 does not support `JSON.load` with 3 args.
-            JSON.parse(file.read, symbolize_names: true)
-          end
+        @result ||= File.open(json_file_path) do |file|
+          # Rubinius 2.0.0.rc1 does not support `JSON.load` with 3 args.
+          JSON.parse(file.read, symbolize_names: true)
         end
       end
 
