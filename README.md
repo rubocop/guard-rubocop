@@ -61,6 +61,9 @@ all_on_start: true     # Check all files at Guard startup.
 cli: '--rails'         # Pass arbitrary RuboCop CLI arguments.
                        # An array or string is acceptable.
                        #   default: nil
+cmd: './bin/rubocop'   # Pass custom cmd to run rubocop.
+                       #   default: rubocop
+
 hide_stdout: false     # Do not display console output (in case outputting to file).
                        #   default: false
 keep_failed: true      # Keep failed files until they pass.
