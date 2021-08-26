@@ -2,6 +2,8 @@
 
 ## Development
 
+* Drop support Ruby 2.4. [#50](https://github.com/rubocop/guard-rubocop/pull/50)
+
 ## v1.4.0
 
 * Support RuboCop 1.0
