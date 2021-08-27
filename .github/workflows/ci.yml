@@ -14,9 +14,10 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
       - run: bundle install
       - run: bundle exec rspec
-      - uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # FIXME: https://github.com/rubocop/guard-rubocop/pull/48#issuecomment-906893891
+      # - uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
   rubocop:
     name: RuboCop
     runs-on: ubuntu-latest
