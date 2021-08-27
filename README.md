@@ -1,13 +1,13 @@
 [![Gem Version](https://badge.fury.io/rb/guard-rubocop.svg)](http://badge.fury.io/rb/guard-rubocop)
-[![CI](https://github.com/yujinakayama/guard-rubocop/workflows/CI/badge.svg)](https://github.com/yujinakayama/guard-rubocop/actions)
-[![Coverage Status](https://coveralls.io/repos/yujinakayama/guard-rubocop/badge.svg?branch=master&service=github)](https://coveralls.io/github/yujinakayama/guard-rubocop?branch=master)
-[![Code Climate](https://codeclimate.com/github/yujinakayama/guard-rubocop/badges/gpa.svg)](https://codeclimate.com/github/yujinakayama/guard-rubocop)
+[![CI](https://github.com/rubocop/guard-rubocop/workflows/CI/badge.svg)](https://github.com/rubocop/guard-rubocop/actions)
+[![Coverage Status](https://coveralls.io/repos/rubocop/guard-rubocop/badge.svg?branch=master&service=github)](https://coveralls.io/github/rubocop/guard-rubocop?branch=master)
+[![Code Climate](https://codeclimate.com/github/rubocop/guard-rubocop/badges/gpa.svg)](https://codeclimate.com/github/rubocop/guard-rubocop)
 
 # guard-rubocop
 
-**guard-rubocop** allows you to automatically check Ruby code style with [RuboCop](https://github.com/rubocop-hq/rubocop) when files are modified.
+**guard-rubocop** allows you to automatically check Ruby code style with [RuboCop](https://github.com/rubocop/rubocop) when files are modified.
 
-Tested on MRI 2.4 - 2.7.
+Tested on MRI 2.5 - 2.7.
 
 ## Installation
 
