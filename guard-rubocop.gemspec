@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Guard plugin for RuboCop'
   spec.description   = 'Guard::RuboCop automatically checks Ruby code style with RuboCop ' \
                        'when files are modified.'
-  spec.homepage      = 'https://github.com/rubocop-hq/guard-rubocop'
+  spec.homepage      = 'https://github.com/rubocop/guard-rubocop'
   spec.license       = 'MIT'
 
   spec.required_ruby_version = '>= 2.5'
