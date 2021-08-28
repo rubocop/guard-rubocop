@@ -2,6 +2,8 @@
 
 ## Development
 
+## v1.5.0
+
 * Drop support Ruby 2.4. [#50](https://github.com/rubocop/guard-rubocop/pull/50)
 * Allow custom `cmd` option for rubocop. [#48](https://github.com/rubocop/guard-rubocop/pull/48)
 

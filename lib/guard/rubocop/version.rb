@@ -5,7 +5,7 @@
 module GuardRuboCopVersion
   # http://semver.org/
   MAJOR = 1
-  MINOR = 4
+  MINOR = 5
   PATCH = 0
 
   def self.to_s
